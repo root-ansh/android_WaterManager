@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animationCache="true"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/ll_root_of_content"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animationCache="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_gender"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animationCache="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="What's your Gender?"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:animationCache="true"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/ibt_man"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/bg_circle_white"
+                        android:contentDescription="man"
+                        android:elevation="4dp"
+
+                        android:padding="12dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_selector_man" />
+
+                    <ImageButton
+                        android:id="@+id/ibt_woman"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/bg_circle_white"
+                        android:contentDescription="man"
+                        android:elevation="4dp"
+
+                        android:padding="12dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_selector_woman" />
+
+
+                    <!-- horizontal select male or female view(+ a small i icon for
+                 telling people that we don't collect this data,
+                  else adding an option of preffer not to tell)-->
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@android:color/white" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_weight"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animationCache="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Choose Your Weight:"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <com.lantouzi.wheelview.WheelView
+                    android:id="@+id/wheelview"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+
+                    android:background="@color/white"
+
+
+                    app:lwvCenterMarkTextSize="18sp"
+                    app:lwvHighlightColor="@color/colorAccent"
+
+                    app:lwvIntervalFactor="2"
+                    app:lwvMarkColor="@color/colorPrimary"
+
+                    app:lwvMarkRatio="0.5"
+
+                    app:lwvMarkTextColor="@color/colorPrimary"
+                    app:lwvMarkTextSize="12sp"
+
+                    />
+
+                <!--<com.lantouzi.wheelview.WheelView-->
+                <!--        android:background="..." background-->
+                <!--        app:lwvCenterMarkTextSize="..." selected text size-->
+                <!--        app:lwvHighlightColor="..." selected text, bar color,and triangular selector color-->
+                <!--        app:lwvIntervalFactor="..." no idea, maybe its the gap-->
+                <!--        app:lwvMarkColor="..." unselected bars color-->
+                <!--        app:lwvMarkRatio="..." ratio of small bars to large bars-->
+                <!--        app:lwvMarkTextColor="..." unselected bar color -->
+                <!--        app:lwvMarkTextSize="..." unselected text size -->
+                <!--/>-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@android:color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sleep_times"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animationCache="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:animationCache="true"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:animationCache="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
+                            android:text="Choose wakeup time"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_timepicker_wakeup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_squiricle_white"
+                            android:clickable="true"
+                            android:elevation="4dp"
+
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:paddingStart="8dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="4dp"
+                            android:text="6:00 AM"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="32sp"
+                            android:textStyle="bold"
+
+                            />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/white" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:animationCache="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
+                            android:text="Choose sleep time"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_timepicker_sleep"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_squiricle_white"
+                            android:clickable="true"
+                            android:elevation="4dp"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:paddingStart="8dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="4dp"
+                            android:text="6:00 AM"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="32sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@android:color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_activity"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animationCache="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Choose any one:My daily routine includes ____________:"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <com.nex3z.flowlayout.FlowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <Button
+                        android:id="@+id/bt_lots"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/bg_selector_chip"
+                        android:elevation="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+
+                        android:padding="12dp"
+                        android:text="lots of Activities"
+
+                        android:textColor="@color/color_selector_chip"
+
+                        />
+
+                    <Button
+                        android:id="@+id/bt_some"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/bg_selector_chip"
+                        android:elevation="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+
+                        android:padding="12dp"
+                        android:text="some Activities"
+
+                        android:textColor="@color/color_selector_chip" />
+
+                    <Button
+                        android:id="@+id/bt_few"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/bg_selector_chip"
+                        android:elevation="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+
+                        android:padding="12dp"
+                        android:text="a very few activities"
+
+                        android:textColor="@color/color_selector_chip" />
+
+                    <Button
+                        android:id="@+id/bt_none"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/bg_selector_chip"
+                        android:elevation="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+
+                        android:padding="12dp"
+
+                        android:text="No Activity at all"
+                        android:textColor="@color/color_selector_chip" />
+
+
+                </com.nex3z.flowlayout.FlowLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@android:color/white" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_continue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="48dp"
+
+                android:backgroundTint="@color/white"
+
+                android:drawableEnd="@drawable/ic_arrow_right_color_prim"
+                android:padding="16dp"
+                android:text="continue"
+                android:textColor="@color/colorPrimary" />
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>

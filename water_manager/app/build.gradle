@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.1"
+    defaultConfig {
+        applicationId "in.curioustools.water_reminder"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    //default libs + extras by google
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //viewpager2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta03'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
+
+
+    def work_version = "2.2.0"
+    def room_version = "2.1.0"
+    def lifecycle_version = "2.0.0"
+
+    // workmanager
+    implementation "androidx.work:work-runtime:$work_version"
+
+    // room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+    //test libs
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.work:work-testing:$work_version"
+    //Test helpers for WorkManager
+    testImplementation "androidx.room:room-testing:$room_version"//Test helpers for Room
+    testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    //Test helpers for LiveData
+
+    //----------------------------------------------------------------------------------
+
+    //for intro info activity
+    implementation 'com.lantouzi.wheelview:library:1.1.2'
+    implementation 'com.nex3z:flow-layout:1.3.0'
+    implementation 'com.github.guilhe:circular-progress-view:1.3.3'
+
+
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animationCache="true"
+    android:background="@drawable/bg_square_blue_gradient"
+    android:orientation="vertical">
+
+    <in.curioustools.water_reminder.ui.custom.wave_loader.WaveLoadingView
+        android:id="@+id/wave_loader_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:wlv_progressValue="20"
+
+        app:wlv_shapeType="rectangle"
+
+        app:wlv_waveAmplitude="16"
+        app:wlv_waveColor="@color/colorPrimaryDark"
+
+        />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animationCache="true"
+
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animationCache="true"
+            android:elevation="2dp"
+            android:layout_marginTop="24dp"
+            app:tabIndicatorHeight="0dp">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp2_dashboard"
+            android:layout_width="match_parent"
+            android:animationCache="true"
+            android:layout_height="match_parent"
+             />
+
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/ll_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_square_blue_gradient"
+        android:elevation="6dp"
+        android:visibility="gone"
+        android:animationCache="true"
+        >
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+
+            android:background="@drawable/bg_circle_white"
+            android:elevation="6dp"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+
+            android:src="@drawable/ic_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="8dp"
+        android:text="Create new button."
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        tools:ignore="HardcodedText" />
+
+    <SeekBar
+        android:id="@+id/seekbar_qty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="1500"
+        android:min="0"
+        android:padding="8dp"
+        android:progress="250"
+        android:progressDrawable="@drawable/drawable_progress_bar_bg"
+        android:splitTrack="false"
+        android:thumb="@drawable/drawable_progress_thumb"
+        android:elevation="4dp"
+
+        tools:targetApi="o" />
+
+
+    <ImageView
+        android:id="@+id/iv_qty_icon_dialog"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_circle_white"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/ic_container_cup_colored"
+        android:elevation="4dp"
+        tools:ignore="ContentDescription" />
+
+
+    <TextView
+        android:id="@+id/tv_qty_text_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        tools:text="1500 ml" />
+
+
+</LinearLayout>

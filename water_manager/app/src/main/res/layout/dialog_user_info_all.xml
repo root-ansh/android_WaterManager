@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:ignore="HardcodedText">
+
+
+    <LinearLayout
+        android:id="@+id/dif_ll_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="What's your Gender?"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/dif_ibt_man"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_circle_white"
+                android:contentDescription="man"
+                android:elevation="4dp"
+
+                android:padding="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_selector_man" />
+
+            <ImageButton
+                android:id="@+id/dif_ibt_woman"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_circle_white"
+                android:contentDescription="man"
+                android:elevation="4dp"
+
+                android:padding="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_selector_woman" />
+
+
+            <!-- horizontal select male or female view(+ a small i icon for
+         telling people that we don't collect this data,
+          else adding an option of preffer not to tell)-->
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dif_ll_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Choose Your Weight:"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <com.lantouzi.wheelview.WheelView
+            android:id="@+id/dif_wheelview"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+
+            android:background="@color/white"
+
+
+            app:lwvCenterMarkTextSize="18sp"
+            app:lwvHighlightColor="@color/colorAccent"
+
+            app:lwvIntervalFactor="2"
+            app:lwvMarkColor="@color/colorPrimary"
+
+            app:lwvMarkRatio="0.5"
+
+            app:lwvMarkTextColor="@color/colorPrimary"
+            app:lwvMarkTextSize="12sp"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dif_ll_intake"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Set your water drink amount:"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_squiricle_white_border"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/dif_et_intake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:digits="1234567890"
+                android:hint="eg. 2048"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="16sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ml"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dif_ll_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Choose any one:My daily routine includes ____________:"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/dif_rg_user_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <RadioButton
+                android:id="@+id/dif_rb_lots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_squiricle_white"
+                android:padding="16dp"
+                android:text="lots of activities"
+                android:layout_marginBottom="8dp"
+
+                android:textAllCaps="true" />
+
+            <RadioButton
+                android:id="@+id/dif_rb_some"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_squiricle_white"
+                android:padding="16dp"
+                android:text="Some activities"
+                android:layout_marginBottom="8dp"
+
+                android:textAllCaps="true" />
+
+            <RadioButton
+                android:id="@+id/dif_rb_few"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_squiricle_white"
+                android:padding="16dp"
+                android:text="very few activities"
+                android:layout_marginBottom="8dp"
+
+                android:textAllCaps="true" />
+
+            <RadioButton
+                android:id="@+id/dif_rb_none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_squiricle_white"
+                android:padding="16dp"
+                android:text="no activities"
+                android:layout_marginBottom="8dp"
+
+                android:textAllCaps="true" />
+
+        </RadioGroup>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

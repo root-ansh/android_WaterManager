@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+
+    >
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="4dp"
+        app:cardMaxElevation="4dp"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:id="@+id/dl_iv_qty_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+
+                android:background="@drawable/bg_circle_white"
+                android:backgroundTint="@color/blue_very_light"
+
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_container_big_bottle_colored"
+                android:layout_marginEnd="16dp"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical"
+
+                >
+
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    >
+
+                    <ProgressBar
+                        android:id="@+id/dl_progressbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:maxHeight="40dp"
+                        android:indeterminate="false"
+                        android:progress="40"
+                        android:layout_gravity="center"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:progressDrawable="@drawable/drawable_progress_bar_2"
+                        />
+
+                    <TextView
+                        android:id="@+id/dl_tv_values"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="start|center"
+                        android:textColor="@color/white"
+                        tools:text="1800/4000 ml" />
+
+
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/dl_tv_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+
+                    tools:text="July, 25,2019" />
+
+
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/dl_ibt_popup_menu"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@android:color/transparent"
+                android:contentDescription="delete"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_dots_menu_black"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="-8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        >
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_squiricle_white"
+            tools:backgroundTint="@color/colorAccent"
+            android:elevation="4dp"
+            android:layout_gravity="start"
+            />
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_squiricle_white"
+            tools:backgroundTint="@color/colorAccent"
+            android:elevation="4dp"
+            android:layout_gravity="end"
+            />
+
+    </FrameLayout>
+
+
+</LinearLayout>
