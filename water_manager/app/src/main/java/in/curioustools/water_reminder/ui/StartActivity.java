@@ -34,17 +34,18 @@ public class StartActivity extends AppCompatActivity {
         finish();
 
         // TODO: 23-08-2019
-        //  1. this whole project was started a month ago on 23/7/19
-        //  2. a reset today stats button is needed in dashboard fragment
-        //  3. some sort of toast is needed to remind user that button pane is available to add new data
-        //  4. Dialogs.class should me more used for very dialog in app. currently not fully used b other classes
-        //  5. Notif maker needs to make a notification with large icon &/or custom view
-        //  6. Somehow needs to show animation for Today entry adapter. currently not showing
-        //  7. Use more viewmodel in dashboard fragment
-        //  8. Daily Log service enable/disable ui needs to be added in settings frag
-        //  9. about page needs to be local and not just a link
+        //  01. this whole project was started a month ago on 23/7/19
+        //  02. a reset today stats button is needed in dashboard fragment
+        //  03. some sort of toast is needed to remind user that button pane is available to add new data
+        //  04. Dialogs.class should me more used for very dialog in app. currently not fully used b other classes
+        //  05. Notif maker needs to make a notification with large icon &/or custom view
+        //  06. Somehow needs to show animation for Today entry adapter. currently not showing
+        //  07. Use more viewmodel in dashboard fragment
+        //  08. Daily Log service enable/disable ui needs to be added in settings frag
+        //  09. about page needs to be local and not just a link
         //  10. intro info fragment could be somehow reused since intro info and settings frag are mostly same but not necessary feature
-
+        //  11. notification is showing a small bug when first launched. it shows 0/2000 even though user's calculated amount is 3204ml
+        //  12. need to replace stop notifications button in notification with "stop notification for the day" (plus the logic)
 
     }
 
