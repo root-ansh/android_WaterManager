@@ -48,6 +48,8 @@ public class StartActivity extends AppCompatActivity {
         //  12. need to replace stop notifications button in notification with "stop notification for the day" (plus the logic)
         //  13. notification is not making a log in today entry database.
         //  14. notification on click should open app.
+        //  15. [SEVERE]:SETTINGS HAS SLEEP TIME WRITTEN TWICE!
+
         
 
     }
