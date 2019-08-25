@@ -49,7 +49,8 @@ public class StartActivity extends AppCompatActivity {
         //  13. notification is not making a log in today entry database.
         //  14. notification on click should open app.
         //  15. [SEVERE]:SETTINGS HAS SLEEP TIME WRITTEN TWICE!
-        //  16. Notification should have an option ti customize
+        //  16. Notification should have an option to customize(like in settings , user can change the glass qty)
+        //  17. Notification **INTERVAL** should have an option to customize(like in settings , user can select weather they want notifications every 15mins/1 hour/2 hour etc)
         
 
     }
