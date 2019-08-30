@@ -4,9 +4,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,6 +70,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
         updateWave(prefMain);
 
+        Toast t = Toast.makeText(this, "Tap a button to save your drink logs", Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER, 0, 0);
+        t.show();
+
 
         loadFragments();
         handleSplash();
@@ -78,8 +84,8 @@ public class DashBoardActivity extends AppCompatActivity {
     void updateWave(SharedPreferences preferences) {
         int achieved = preferences.getInt(KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
         int target = preferences.getInt(KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
-        int progress = Math.round((float) achieved / target*100);
-        progress= progress>100?100:progress;
+        int progress = Math.round((float) achieved / target * 100);
+        progress = progress > 100 ? 100 : progress;
         Log.e(TAG, "updateWave: called progress=" + progress);
         waveLoader.setProgressValue(progress);
     }
@@ -102,11 +108,17 @@ public class DashBoardActivity extends AppCompatActivity {
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                         tab.setText("");
-                        int iconRes=R.drawable.ic_notif_icon;
-                        switch (position){
-                            case 0:iconRes=R.drawable.ic_daily_logs_white;break;
-                            case 1:iconRes=R.drawable.ic_notif_icon;break;
-                            case 2:iconRes=R.drawable.ic_settings;break;
+                        int iconRes = R.drawable.ic_notif_icon;
+                        switch (position) {
+                            case 0:
+                                iconRes = R.drawable.ic_daily_logs_white;
+                                break;
+                            case 1:
+                                iconRes = R.drawable.ic_notif_icon;
+                                break;
+                            case 2:
+                                iconRes = R.drawable.ic_settings;
+                                break;
                         }
                         tab.setIcon(iconRes);
 
@@ -114,6 +126,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 }).attach();
 
     }
+
     private void handleSplash() {
         findViewById(R.id.ll_splash).setVisibility(View.VISIBLE);
         new Thread(new Runnable() {
@@ -133,6 +146,7 @@ public class DashBoardActivity extends AppCompatActivity {
         }).start();
 
     }
+
     public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
         private ArrayList<Fragment> fragList = new ArrayList<>();
@@ -163,6 +177,7 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onResume();
         prefMain.registerOnSharedPreferenceChangeListener(listener);
     }
+
     @Override
     protected void onPause() {
         super.onPause();

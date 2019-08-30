@@ -15,12 +15,9 @@
 
 
     <color name="golden_light">#FFDA7D</color>
-    <color name="gray">#aaaaaa</color>
 
     <color name="white">#FFFFFF</color>
     <color name="white_light">#F8F8F8</color>
-
-    <color name="yellow_dark">#FFC107</color>
 
 
 </resources>

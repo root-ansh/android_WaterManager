@@ -239,7 +239,6 @@ public class SettingsFragment extends Fragment {
                 });
             }
         });
-
     }
 
     private void initPrefAndListener(final View root) {
@@ -248,10 +247,15 @@ public class SettingsFragment extends Fragment {
         prefListener = new OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-                setDataOnUi(sharedPreferences);
-                ServicesHandler.updateServices(root.getContext());
+                onPreferenceUpdated(sharedPreferences,root);
+
             }
         };
+    }
+
+    private void onPreferenceUpdated(SharedPreferences sharedPreferences,View root) {
+        setDataOnUi(sharedPreferences);
+        ServicesHandler.updateServices(root.getContext());
     }
 
     private void updatePref(String key, Object value) {//warning value should be string integer

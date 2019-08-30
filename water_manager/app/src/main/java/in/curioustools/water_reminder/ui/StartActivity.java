@@ -37,7 +37,7 @@ public class StartActivity extends AppCompatActivity {
         //  01. this whole project was started a month ago on 23/7/19
         //  02. a reset today stats button is needed in dashboard fragment
         //  03. some sort of toast is needed to remind user that button pane is available to add new data
-        //  04. Dialogs.class should be more used for very dialog in app. currently not fully used b other classes
+        //  04. Dialogs.class should be more used for every dialog in app. currently not fully used by other classes
         //  05. Notif maker needs to make a notification with large icon &/or custom view
         //  06. Somehow needs to show animation for Today entry adapter. currently not showing
         //  07. Use more viewmodel in dashboard fragment
@@ -48,9 +48,10 @@ public class StartActivity extends AppCompatActivity {
         //  12. need to replace stop notifications button in notification with "stop notification for the day" (plus the logic)
         //  13. notification is not making a log in today entry database.
         //  14. notification on click should open app.
-        //  15. [SEVERE]:SETTINGS HAS SLEEP TIME WRITTEN TWICE!
+        //  15. [FIXED]:SETTINGS HAS SLEEP TIME WRITTEN TWICE!
         //  16. Notification should have an option to customize(like in settings , user can change the glass qty)
         //  17. Notification **INTERVAL** should have an option to customize(like in settings , user can select weather they want notifications every 15mins/1 hour/2 hour etc)
+        //  18. When a  today entry  is cleared, it should also subtract that much qty from the shared pref.
         
 
     }

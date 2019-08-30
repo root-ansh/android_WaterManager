@@ -7,8 +7,8 @@
     android:animationCache="true"
     android:fillViewport="true"
     android:paddingStart="16dp"
-    android:paddingEnd="16dp"
     android:paddingTop="72dp"
+    android:paddingEnd="16dp"
 
     tools:ignore="HardcodedText"
 
@@ -85,10 +85,10 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:paddingBottom="8dp"
-                        android:textColor="@color/black"
+                        android:text="Click For Licenses, credits and other info."
 
-                        android:textSize="12sp"
-                        android:text="Click For Licenses, credits and other info." />
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
 
                 </LinearLayout>
@@ -552,41 +552,31 @@
 
             <LinearLayout
                 android:id="@+id/stf_layout_sleep_time"
-
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:animationCache="true"
-
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="horizontal"
-
                 android:padding="8dp">
 
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_gravity="center"
-
                     android:background="@drawable/bg_circle_white"
                     android:backgroundTint="#E8FBFF"
-
                     android:padding="8dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_container_thermos_colored"
-
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="0dp"
-
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:animationCache="true"
-
-
                     android:orientation="vertical">
 
                     <TextView
@@ -605,7 +595,7 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:paddingBottom="8dp"
-                        android:text="No notifications will be shown after sleep time"
+                        android:text="No notifications will be shown AFTER this time"
                         android:textSize="12sp" />
 
                     <TextView
@@ -617,7 +607,6 @@
                         android:paddingEnd="8dp"
                         android:paddingBottom="8dp"
                         android:textColor="@color/black"
-
                         android:textSize="12sp"
                         tools:text="12:26 PM" />
 
@@ -638,7 +627,6 @@
             android:layout_marginTop="-16dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="-16dp"
-
             android:animationCache="true"
 
             >
@@ -649,7 +637,6 @@
                 android:layout_gravity="start"
                 android:background="@drawable/bg_squiricle_white"
                 android:elevation="4dp"
-
                 tools:backgroundTint="@color/colorAccent" />
 
             <View
@@ -670,35 +657,27 @@
             android:layout_marginBottom="8dp"
             android:animationCache="true"
             app:cardElevation="4dp"
-
             app:cardMaxElevation="4dp">
 
             <LinearLayout
                 android:id="@+id/stf_layout_wakeup_time"
-
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:animationCache="true"
-
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="horizontal"
-
                 android:padding="8dp">
 
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_gravity="center"
-
                     android:background="@drawable/bg_circle_white"
                     android:backgroundTint="#E8FBFF"
-
                     android:padding="8dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_container_thermos_colored"
-
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
@@ -708,8 +687,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:animationCache="true"
-
-
                     android:orientation="vertical">
 
                     <TextView
@@ -718,7 +695,7 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:paddingBottom="8dp"
-                        android:text="Sleep time"
+                        android:text="WakeUp time"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -728,7 +705,7 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:paddingBottom="8dp"
-                        android:text="No notifications will be shown before wakeup time"
+                        android:text="No notifications will be shown BEFORE this time"
                         android:textSize="12sp" />
 
                     <TextView
@@ -740,16 +717,12 @@
                         android:paddingEnd="8dp"
                         android:paddingBottom="8dp"
                         android:textColor="@color/black"
-
                         android:textSize="12sp"
                         tools:text="12:26 PM" />
 
-
                 </LinearLayout>
 
-
             </LinearLayout>
-
 
         </androidx.cardview.widget.CardView>
 
