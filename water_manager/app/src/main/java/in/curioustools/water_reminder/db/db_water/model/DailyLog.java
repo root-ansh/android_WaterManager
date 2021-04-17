@@ -11,7 +11,6 @@ import java.util.Locale;
 import in.curioustools.water_reminder.UiUtilities.TimeUtilities;
 import in.curioustools.water_reminder.db.db_water.WaterDbUtils;
 
-@SuppressWarnings("SpellCheckingInspection")
 @Entity(tableName = WaterDbUtils.TDL.Names.TABLE_NAME)
 public class DailyLog {
     @ColumnInfo(name = WaterDbUtils.TDL.Names.COL_ID)

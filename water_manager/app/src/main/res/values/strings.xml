@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Water Manager</string>
+    <string name="zero_ml">0 ml</string>
 
 </resources>

@@ -97,7 +97,6 @@ public class TodayEntriesAdapter extends RecyclerView.Adapter<TodayEntriesAdapte
 //            popupMenuDelete.show();
         }
 
-        @SuppressWarnings("unused")
         void bindData(final TodayEntry data, final boolean isLast, @Nullable final OnMyMenuItemClickListener listener) {
             String a = "Drank ";
             String b = "" + data.getAmount();

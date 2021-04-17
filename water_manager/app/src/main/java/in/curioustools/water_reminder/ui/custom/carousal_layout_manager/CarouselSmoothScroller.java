@@ -25,12 +25,10 @@ public class CarouselSmoothScroller {
         }
     }
 
-    @SuppressWarnings("unused")
     public PointF computeScrollVectorForPosition(final int targetPosition, @NonNull final CarouselLayoutManager carouselLayoutManager) {
         return carouselLayoutManager.computeScrollVectorForPosition(targetPosition);
     }
 
-    @SuppressWarnings("unused")
     public int calculateDyToMakeVisible(final View view, @NonNull final CarouselLayoutManager carouselLayoutManager) {
         if (!carouselLayoutManager.canScrollVertically()) {
             return 0;
@@ -39,7 +37,6 @@ public class CarouselSmoothScroller {
         return carouselLayoutManager.getOffsetForCurrentView(view);
     }
 
-    @SuppressWarnings("unused")
     public int calculateDxToMakeVisible(final View view, @NonNull final CarouselLayoutManager carouselLayoutManager) {
         if (!carouselLayoutManager.canScrollHorizontally()) {
             return 0;

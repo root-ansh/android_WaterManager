@@ -21,7 +21,6 @@ import in.curioustools.water_reminder.R;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 
-@SuppressWarnings("FieldCanBeLocal")
 public class NotifMaker {
     private static final String TAG = "NJS>>";
     private static final int NOTIFICATION_ID = 220;
@@ -56,7 +55,6 @@ public class NotifMaker {
 
 
 
-    @SuppressWarnings("unused")
     public void setPendingIntent(@Nullable PendingIntent pendingIntent) {
         this.pendingIntent = pendingIntent;
     }
@@ -68,7 +66,6 @@ public class NotifMaker {
     }
 
 
-    @SuppressWarnings("unused")
     public void setActionBtn3(@Nullable NotificationCompat.Action actionBtn3) {
         this.actionbtn3 = actionBtn3;
     }

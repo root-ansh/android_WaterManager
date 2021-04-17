@@ -228,7 +228,6 @@ public class Dialogs {
     private enum ViewType {Gender, Weight, Intake, Activityy}
 
     private static View createView(Context ctx, ViewType type) {
-        @SuppressLint("InflateParams")
         View v = LayoutInflater.from(ctx).inflate(R.layout.dialog_user_info_all, null, false);
 
         v.findViewById(R.id.dif_ll_gender).setVisibility(View.GONE);

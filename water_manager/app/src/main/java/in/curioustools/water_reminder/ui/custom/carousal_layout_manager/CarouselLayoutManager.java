@@ -38,7 +38,6 @@ import java.util.List;
  * So like layout_height is not {@link ViewGroup.LayoutParams#MATCH_PARENT} for {@link CarouselLayoutManager#VERTICAL}<br />
  * <br />
  */
-@SuppressWarnings({"ClassWithTooManyMethods", "OverlyComplexClass", "unused", "WeakerAccess"})
 public class CarouselLayoutManager extends RecyclerView.LayoutManager implements RecyclerView.SmoothScroller.ScrollVectorProvider {
 
     public static final int HORIZONTAL = OrientationHelper.HORIZONTAL;
@@ -72,7 +71,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
     /**
      * @param orientation should be {@link #VERTICAL} or {@link #HORIZONTAL}
      */
-    @SuppressWarnings("unused")
     public CarouselLayoutManager(final int orientation) {
         this(orientation, CIRCLE_LAYOUT);
     }
@@ -83,7 +81,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
      * @param orientation  should be {@link #VERTICAL} or {@link #HORIZONTAL}
      * @param circleLayout true for enabling circleLayout
      */
-    @SuppressWarnings("unused")
     public CarouselLayoutManager(final int orientation, final boolean circleLayout) {
         if (HORIZONTAL != orientation && VERTICAL != orientation) {
             throw new IllegalArgumentException("orientation should be HORIZONTAL or VERTICAL");
@@ -101,7 +98,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
      *
      * @param postLayoutListener listener for item layout changes. Can be null.
      */
-    @SuppressWarnings("unused")
     public void setPostLayoutListener(@Nullable final PostLayoutListener postLayoutListener) {
         mViewPostLayout = postLayoutListener;
         requestLayout();
@@ -114,7 +110,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
      * @param maxVisibleItems should be great then 0, if bot an {@link IllegalAccessException} will be thrown
      */
     @CallSuper
-    @SuppressWarnings("unused")
     public void setMaxVisibleItems(final int maxVisibleItems) {
         if (0 >= maxVisibleItems) {
             throw new IllegalArgumentException("maxVisibleItems can't be less then 1");
@@ -127,7 +122,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
      * @return current setup for maximum visible items.
      * @see #setMaxVisibleItems(int)
      */
-    @SuppressWarnings("unused")
     public int getMaxVisibleItems() {
         return mLayoutHelper.mMaxVisibleItems;
     }
@@ -177,7 +171,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
         mOnCenterItemSelectionListeners.remove(onCenterItemSelectionListener);
     }
 
-    @SuppressWarnings("RefusedBequest")
     @Override
     public void scrollToPosition(final int position) {
         if (0 > position) {
@@ -187,7 +180,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
         requestLayout();
     }
 
-    @SuppressWarnings("RefusedBequest")
     @Override
     public void smoothScrollToPosition(@NonNull final RecyclerView recyclerView, @NonNull final RecyclerView.State state, final int position) {
         final LinearSmoothScroller linearSmoothScroller = new LinearSmoothScroller(recyclerView.getContext()) {
@@ -320,7 +312,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
         super.onMeasure(recycler, state, widthSpec, heightSpec);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void onAdapterChanged(final RecyclerView.Adapter oldAdapter, final RecyclerView.Adapter newAdapter) {
         super.onAdapterChanged(oldAdapter, newAdapter);
@@ -328,7 +319,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
         removeAllViews();
     }
 
-    @SuppressWarnings("RefusedBequest")
     @Override
     @CallSuper
     public void onLayoutChildren(@NonNull final RecyclerView.Recycler recycler, @NonNull final RecyclerView.State state) {
@@ -453,7 +443,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
     }
 
 
-    @SuppressWarnings("MethodWithTooManyParameters")
     private void fillChildItem(final int start, final int top, final int end, final int bottom, @NonNull final LayoutOrder layoutOrder, @NonNull final RecyclerView.Recycler recycler, final int i) {
         final View view = bindChild(layoutOrder.mItemAdapterPosition, recycler);
         ViewCompat.setElevation(view, i);
@@ -615,7 +604,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
      * @return smooth position offset. needed for scroll calculation and better user experience.
      * @see #getCardOffsetByPositionDiff(float)
      */
-    @SuppressWarnings({"MagicNumber", "InstanceMethodNamingConvention"})
     protected double convertItemPositionDiffToSmoothPositionDiff(final float itemPositionDiff) {
         // generally item moves the same way above center and bellow it. So we don't care about diff sign.
         final float absIemPositionDiff = Math.abs(itemPositionDiff);
@@ -705,7 +693,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
      * <br />
      * Generally this method should be used for scaling and translating view item for better (different) view presentation of layouting.
      */
-    @SuppressWarnings("InterfaceNeverImplemented")
     public interface PostLayoutListener {
 
         /**
@@ -801,7 +788,6 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
             return false;
         }
 
-        @SuppressWarnings("VariableArgumentMethod")
         private void recycleItems(@NonNull final LayoutOrder... layoutOrders) {
             for (final LayoutOrder layoutOrder : layoutOrders) {
                 //noinspection ObjectAllocationInLoop

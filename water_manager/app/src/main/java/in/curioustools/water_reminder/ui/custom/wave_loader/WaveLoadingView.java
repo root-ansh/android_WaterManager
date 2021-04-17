@@ -696,14 +696,14 @@ public class WaveLoadingView extends View {
         }
     }
 
-    @SuppressWarnings("deprecation")
+
     public void pauseAnimation() {
         if (mAnimatorSet != null) {
             mAnimatorSet.pause();
         }
     }
 
-    @SuppressWarnings("deprecation")
+
     public void resumeAnimation() {
         if (mAnimatorSet != null) {
             mAnimatorSet.resume();

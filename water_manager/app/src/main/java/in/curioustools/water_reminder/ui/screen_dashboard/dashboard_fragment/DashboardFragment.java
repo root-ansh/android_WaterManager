@@ -50,7 +50,6 @@ public class DashboardFragment extends Fragment {
 
     private TextView tvAchieved, tvTarget;
     private RecyclerView rvButtons;
-    @SuppressWarnings("FieldCanBeLocal")
     private RecyclerView rvTodayEntries;
     private QuantityButtonsAdapter adpButtons;
     private TodayEntriesAdapter adpEntries;
@@ -74,15 +73,8 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        String s = String.format(
-                Locale.ROOT,
-                "onCreateView: called  with layout inflator :%s container %s ,bundle %s",
-                inflater, container, savedInstanceState
-        );
-        Log.e(TAG, s);
-
+        Log.e(TAG, "onCreateView() called with: inflater = [" + inflater + "], container = [" + container + "], savedInstanceState = [" + savedInstanceState + "]");
         View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
         Log.e(TAG, "onCreateView:  returning view " + v);
         return v;
     }
@@ -91,12 +83,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View fragView, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(fragView, savedInstanceState);
-        String s = String.format(
-                Locale.ROOT,
-                "onViewCreated: called  with fragView :%s Bundle :%s ",
-                fragView, savedInstanceState
-        );
-        Log.e(TAG, s);
+        Log.e(TAG, "onViewCreated() called with: fragView = [" + fragView + "], savedInstanceState = [" + savedInstanceState + "]");
 
         Log.e(TAG, "onViewCreated: calling initUi() with fragview" + fragView);
         initUi(fragView);
@@ -109,7 +96,6 @@ public class DashboardFragment extends Fragment {
 
         if (repo != null && prefBasicInfo != null) {
             UtilMethods.makeDateChanges(prefBasicInfo, repo);
-
         }
         setUiFromPreferences(prefBasicInfo);
 
@@ -154,7 +140,6 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    @SuppressLint("SetTextI18n")
     private void setInitialData() {
         Log.e(TAG, "setInitialData: called");
         progressView.setProgress(0);
@@ -164,22 +149,22 @@ public class DashboardFragment extends Fragment {
 
         adpButtons.setButtonModelList(QuantityButtonModel.getDefaultButtonList());
         rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
-        adpEntries.setEntryList(new ArrayList<TodayEntry>());
+        adpEntries.setEntryList(new ArrayList<>());
         Log.e(TAG, "setInitialData: setted progres to 0,max to 0, setted adpetries as empty list and buttons as button lists");
 
-        tvTarget.setText("0 ml");
+        tvTarget.setText(tvTarget.getContext().getString(R.string.zero_ml));
         tvAchieved.setText("0");
     }
 
     private void updateTextAnimated(int initialVal, int finalVal, final TextView tv) {
         ValueAnimator animator = ValueAnimator.ofInt(initialVal, finalVal);
         animator.setDuration(1500);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                tv.setText(String.format("%s", valueAnimator.getAnimatedValue().toString()));
-            }
-        });
+        animator.addUpdateListener(
+                valueAnimator -> {
+                    String s = String.format("%s", valueAnimator.getAnimatedValue().toString());
+                    tv.setText(s);
+                }
+        );
         animator.start();
     }
 
@@ -199,7 +184,6 @@ public class DashboardFragment extends Fragment {
             boolean isBetweenSleep = TimeUtilities.isTimeInBetween2Times(sleepTime, wakeTime, currentTime);
             if (isBetweenSleep) {
                 Log.e(TAG, "getProgressImage: curret time is between sleeptimes, so returning sleepy pic");
-
                 return R.drawable.ic_progress_centre_sleeping;
             } else {
                 Log.e(TAG, "getProgressImage: getting achieved and target amount from pref");
@@ -225,23 +209,18 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void initPrefAndListener(View root) {
         Log.e(TAG, "initPrefAndListener: called");
         prefBasicInfo = root.getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         Log.e(TAG, "initPrefAndListener: setted preference:" + prefBasicInfo);
-        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences pref, String s) {
-                Log.e(TAG, "onSharedPreferenceChanged: preference updated calling" +
-                        "setUiFromPreferences(pref) for pref= " + pref);
-                if (repo != null) {
-                    UtilMethods.makeDateChanges(prefBasicInfo, repo);
-                }
-
-                setUiFromPreferences(pref);
-
+        prefListener = (pref, s) -> {
+            Log.e(TAG, "onSharedPreferenceChanged: preference updated calling setUiFromPreferences(pref) for pref= " + pref);
+            if (repo != null && prefBasicInfo!=null) {
+                UtilMethods.makeDateChanges(prefBasicInfo, repo);
             }
+
+            setUiFromPreferences(pref);
+
         };
     }
 
@@ -275,30 +254,24 @@ public class DashboardFragment extends Fragment {
         Log.e(TAG, String.format("setRepoAndLiveData: setted repo and livedata as: %s, %s", repo, liveEntries));
         if (liveEntries != null) {
             Log.e(TAG, "setRepoAndLiveData: liventries aren't null");
-            liveEntries.observe(this, new Observer<List<TodayEntry>>() {
-                @Override
-                public void onChanged(@Nullable List<TodayEntry> todayEntries) {
-                    Log.e(TAG, "onChanged: recieved list in livedata observer :" + todayEntries);
-                    if (adpEntries != null) {
-                        Log.e(TAG, "onChanged: adpentries is not null");
-                        adpEntries.setEntryList(todayEntries);//doesn't matter even if list is null
-                    }
+            liveEntries.observe(this, todayEntries -> {
+                Log.e(TAG, "onChanged: recieved list in livedata observer :" + todayEntries);
+                if (adpEntries != null) {
+                    Log.e(TAG, "onChanged: adpentries is not null");
+                    adpEntries.setEntryList(todayEntries);//doesn't matter even if list is null
                 }
             });
         }
     }
 
     private void setListeners(final View fragView) {
-        adpEntries.setListener(new TodayEntriesAdapter.OnMyMenuItemClickListener() {
-            @Override
-            public void onDeleteButtonClick(TodayEntry entry) {
-                Log.e(TAG, "adpEntries:onDeleteButtonClick: button is clicked! entry recieved=" + entry);
+        adpEntries.setListener(entry -> {
+            Log.e(TAG, "adpEntries:onDeleteButtonClick: button is clicked! entry recieved=" + entry);
 
-                if (repo != null) {
-                    Log.e(TAG, "onDeleteButtonClick: calling:repo.removeOldTodayEntry(entry)");
+            if (repo != null) {
+                Log.e(TAG, "onDeleteButtonClick: calling:repo.removeOldTodayEntry(entry)");
 
-                    repo.removeOldTodayEntry(entry);
-                }
+                repo.removeOldTodayEntry(entry);
             }
         });
 
@@ -329,16 +302,13 @@ public class DashboardFragment extends Fragment {
                 QuantityDialog dialog;
                 dialog = new QuantityDialog(fragView.getContext());
                 dialog.setOnPositiveClickListener(
-                        new OnPositiveClickListener() {
-                            @Override
-                            public void onPositiveButtonClick(QuantityButtonModel data) {
-                                adpButtons.addItemInCentre(data);
-                                //  15-08-2019 add item in shared pref
-                                //  update: we are not doing that. now we have in memory 5 buttons
-                                //  and 1 add new button. user can create temporary buttons but that
-                                //  would be removed as soon as the app is killed.
-                                rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
-                            }
+                        data -> {
+                            adpButtons.addItemInCentre(data);
+                            //  15-08-2019 add item in shared pref
+                            //  update: we are not doing that. now we have in memory 5 buttons
+                            //  and 1 add new button. user can create temporary buttons but that
+                            //  would be removed as soon as the app is killed.
+                            rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
                         });
                 dialog.show();
             }

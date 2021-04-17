@@ -1,11 +1,12 @@
 package in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import in.curioustools.water_reminder.R;
 
-@SuppressWarnings("WeakerAccess")
 public class QuantityButtonModel {
 
     static final QuantityButtonModel QUANTITY_CUP
@@ -71,6 +72,7 @@ public class QuantityButtonModel {
 //        this.qty = qty;
 //    }
 
+    @NonNull
     @Override
     public String toString() {
         return "QuantityButtonModel{" +

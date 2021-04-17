@@ -36,7 +36,6 @@ public class TimeUtilities {
         return formatter.format(datetime);//String timeString = formatter.format(datetime);
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static boolean isTimeInBetween2Times(String startTime, String endTime, String checkTime) {
         Log.e(TAG, String.format("isTimeInBetween2Times: called for times:%s, %s, %s", startTime, endTime, checkTime));
         //warning :checks for hours only!

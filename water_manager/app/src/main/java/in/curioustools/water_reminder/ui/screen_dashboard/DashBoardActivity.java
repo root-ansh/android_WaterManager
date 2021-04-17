@@ -112,15 +112,18 @@ public class DashBoardActivity extends AppCompatActivity {
                         tab.setText("");
                         int iconRes = R.drawable.ic_notif_icon;
                         switch (position) {
-                            case 0:
+                            case 0: {
                                 iconRes = R.drawable.ic_daily_logs_white;
                                 break;
-                            case 1:
+                            }
+                            case 1: {
                                 iconRes = R.drawable.ic_notif_icon;
                                 break;
-                            case 2:
+                            }
+                            case 2: {
                                 iconRes = R.drawable.ic_settings;
                                 break;
+                            }
                         }
                         tab.setIcon(iconRes);
 

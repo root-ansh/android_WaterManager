@@ -207,7 +207,6 @@ public class TakeInfoFragment extends Fragment {
         dialog.show();
     }
 
-    @SuppressLint("InflateParams")
     private void showContinueDialog(Context ctx) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ctx);
 
@@ -251,7 +250,6 @@ public class TakeInfoFragment extends Fragment {
     }
 
     private static class UiAnimations {
-        @SuppressWarnings("SameParameterValue")
         static void animateWaveLoader(final WaveLoadingView loadingView, int start, int end) {
             ValueAnimator animator = ValueAnimator.ofInt(start, end);
             animator.setDuration(1000);
@@ -264,7 +262,6 @@ public class TakeInfoFragment extends Fragment {
             animator.start();
         }
 
-        @SuppressWarnings("SameParameterValue")
         static void animateNumEditText(final EditText etDialog, int start, int end) {
             ValueAnimator animator = ValueAnimator.ofInt(start, end);
             animator.setDuration(1500);
@@ -434,7 +431,6 @@ public class TakeInfoFragment extends Fragment {
 
     }
 
-    @SuppressLint("SetTextI18n")
     private void showInformationBoxes(View v) {
 
 

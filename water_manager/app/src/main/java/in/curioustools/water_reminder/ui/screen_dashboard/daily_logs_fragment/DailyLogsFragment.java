@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,11 +43,7 @@ public class DailyLogsFragment extends Fragment {
 
         FragmentActivity activity =this.getActivity();
         if(activity!=null) {
-            model = ViewModelProviders
-                    .of(this,
-                            DailyLogsViewModelFactory.getFactory(activity.getApplicationContext()
-                            ))
-                    .get(DailyLogsViewModel.class);
+            model = new ViewModelProvider(this, DailyLogsViewModelFactory.getFactory(activity.getApplicationContext())).get(DailyLogsViewModel.class);
         }
         else {
             Log.e(TAG, "onActivityCreated: activity is null, viewmodel not initialised" );
