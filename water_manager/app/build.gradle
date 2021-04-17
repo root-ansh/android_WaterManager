@@ -38,8 +38,6 @@ dependencies {
 
     def work_version = "2.5.0"
     def room_version = "2.2.6"
-    def lifecycle_version = "2.2.0"
-    def lifecycle_testing_version = "2.1.0"
 
 
     // workmanager
@@ -50,18 +48,25 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    def lifecycle_version = "2.3.1"
 
-    //test libs
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation "androidx.work:work-testing:$work_version"
-    //Test helpers for WorkManager
-    testImplementation "androidx.room:room-testing:$room_version"//Test helpers for Room
-    testImplementation "androidx.arch.core:core-testing:$lifecycle_testing_version"
-    //Test helpers for LiveData
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
+    // Saved state module for ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // optional - helpers for implementing LifecycleOwner in a Service
+    implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
+
+    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
+    implementation "androidx.lifecycle:lifecycle-process:$lifecycle_version"
+
 
     //----------------------------------------------------------------------------------
 
