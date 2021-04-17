@@ -103,8 +103,10 @@ public class DashBoardActivity extends AppCompatActivity {
         viewPager2.setCurrentItem(1);
 
 
+
+
         new TabLayoutMediator(tbTabs, viewPager2,
-                new TabLayoutMediator.OnConfigureTabCallback() {
+                new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                         tab.setText("");
