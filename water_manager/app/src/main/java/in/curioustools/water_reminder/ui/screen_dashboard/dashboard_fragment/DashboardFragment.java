@@ -39,8 +39,8 @@ import static in.curioustools.water_reminder.ui.custom.carousal_layout_manager.C
 
 //todo : left items:
 // - support for notif flouid ounces
-// - support for today entries fluid ounces
 // - support for add measurement popup fluid ounces
+//- support for fl oz in intro fragment
 public class DashboardFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, QuantityButtonClickListener, OnTodayItemMenuClickListener {
     //----------------<global>---------------------------
 
@@ -144,10 +144,15 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
 
     @Override
     public void onAddNewQtyButtonClick() {
-        if (fragRootView == null || rvButtons == null) return;
+        if (fragRootView == null || rvButtons == null || prefBasicInfo == null) return;
+
+        boolean showMetricsAsImperial = prefBasicInfo.getBoolean(
+                PrefUserDetails.KEYS.KEY_SHOW_IMPERIAL_MM,
+                PrefUserDetails.Defaults.SHOW_IMPERIAL_MM
+        );
 
         QuantityDialog dialog;
-        dialog = new QuantityDialog(fragRootView.getContext());
+        dialog = new QuantityDialog(fragRootView.getContext(),showMetricsAsImperial);
         dialog.setOnPositiveClickListener(
                 data -> {
                     adpButtons.addItemInCentre(data);
@@ -178,7 +183,7 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
 
     @Override
     public void onDeleteButtonClick(TodayEntry entry) {
-        if (repo == null || prefBasicInfo == null ) return;
+        if (repo == null || prefBasicInfo == null) return;
         repo.removeOldTodayEntry(entry);
         int origQty = prefBasicInfo.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
         int qty = entry.getAmountInMilliLitres();
@@ -196,7 +201,7 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
         setProgressImage(pref);
         setTargetAndAchievedAmount(pref);
 
-        if(pref!=null){
+        if (pref != null) {
             boolean showMetricsAsImperial = pref.getBoolean(PrefUserDetails.KEYS.KEY_SHOW_IMPERIAL_MM, PrefUserDetails.Defaults.SHOW_IMPERIAL_MM);
             adpEntries.updateMetricsAsImperial(showMetricsAsImperial);
             adpButtons.updateMetricsAsImperial(showMetricsAsImperial);

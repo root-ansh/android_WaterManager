@@ -15,21 +15,22 @@ import androidx.annotation.Nullable;
 import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
-
-import static in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment.QuantityButtonModel.*;
+import in.curioustools.water_reminder.utils.JVMBasedUtils;
 
 
 class QuantityDialog {
     @Nullable
     private QuantityButtonModel currentData;
-    private AlertDialog.Builder builder;
+    private final AlertDialog.Builder builder;
+    private final boolean showMetricsAsImperial;
 
     public interface OnPositiveClickListener {
         void onPositiveButtonClick(QuantityButtonModel data);
     }
 
-    QuantityDialog(Context ctx) {
-        this.currentData = QUANTITY_GLASS;
+    QuantityDialog(Context ctx, boolean showMetricsAsImperial) {
+        this.currentData = QuantityButtonModel.QUANTITY_GLASS;
+        this.showMetricsAsImperial = showMetricsAsImperial;
         View dialogView = createView(ctx);
         this.builder = new AlertDialog.Builder(ctx)
                 .setView(dialogView)
@@ -38,8 +39,7 @@ class QuantityDialog {
     }
 
     private View createView(Context ctx) {
-        View v = LayoutInflater.from(ctx)
-                .inflate(R.layout.dialog_new_quantitiy_btn, null);
+        View v = LayoutInflater.from(ctx).inflate(R.layout.dialog_new_quantitiy_btn, null);
 
         //init ui
         SeekBar seekQty = v.findViewById(R.id.seekbar_qty);
@@ -47,21 +47,21 @@ class QuantityDialog {
         final ImageView ivQty = v.findViewById(R.id.iv_qty_icon_dialog);
         //init data and defaults
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            seekQty.setMin(QUANTITY_MIN);
+            seekQty.setMin(QuantityButtonModel.QUANTITY_MIN);
         }
-        seekQty.setMax(QUANTITY_MAX);
+        seekQty.setMax(QuantityButtonModel.QUANTITY_MAX);
         if (currentData != null) {
             seekQty.setProgress(currentData.getQty());
-            tvQty.setText(String.format(Locale.ROOT, "%d ml", currentData.getQty()));
+            tvQty.setText(getAmountString(currentData.getQty()));
             ivQty.setImageResource(currentData.getQtyImage());
         }
         //init listener
         seekQty.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                progress = Math.max(progress, QUANTITY_MIN);
-                tvQty.setText(String.format(Locale.ROOT, "%d ml", progress));
-                int resID = getResForQty(progress);
+                progress = Math.max(progress, QuantityButtonModel.QUANTITY_MIN);
+                tvQty.setText(getAmountString(progress));
+                int resID = QuantityButtonModel.getResForQty(progress);
                 ivQty.setImageResource(resID);
                 currentData = new QuantityButtonModel(resID, progress);
             }
@@ -78,18 +78,22 @@ class QuantityDialog {
         return v;
     }
 
-    void setOnPositiveClickListener(@Nullable final OnPositiveClickListener listener) {
+    private String getAmountString(int qty) {
+        return showMetricsAsImperial
+                ? String.format(Locale.ROOT, "%d fl. oz.", JVMBasedUtils.convertToFluidOunces(qty))
+                : String.format(Locale.ROOT, "%d ml", qty);
+    }
+
+    public void setOnPositiveClickListener(@Nullable final OnPositiveClickListener listener) {
         builder.setPositiveButton("Done", (dialogInterface, i) -> {
             if (listener != null) {
                 listener.onPositiveButtonClick(currentData);
             }
             dialogInterface.dismiss();
         });
-
     }
 
-    void show() {
+    public void show() {
         builder.show();
     }
-
 }

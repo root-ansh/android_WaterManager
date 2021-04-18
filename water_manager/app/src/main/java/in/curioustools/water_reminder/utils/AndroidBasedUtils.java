@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import in.curioustools.water_reminder.db.db_water.WaterRepo;
