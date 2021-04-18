@@ -11,18 +11,21 @@ import in.curioustools.water_reminder.db.db_water.model.DailyLog;
 
 
 public class DailyLogsViewModel extends ViewModel {
-    private WaterRepo repo;
+    private final WaterRepo repo;
 
     public DailyLogsViewModel(@Nullable WaterRepo repo) {
         this.repo = repo;
     }
 
     @Nullable
-    LiveData<List<DailyLog>> getAllLogs(){
-        return repo.getAllDailyLogsObservable();
+    public LiveData<List<DailyLog>> getAllLogs() throws Exception {
+        if(repo!=null)
+            return repo.getAllDailyLogsObservable();
+        else
+            throw new Exception("DailyLogsViewModel >> repo is null");
     }
-    void removeLog(@Nullable DailyLog log) {
-        if (log != null) {
+    public void removeLog(@Nullable DailyLog log) {
+        if (log != null && repo!= null) {
             repo.removeOldDailyLog(log);
         }
     }

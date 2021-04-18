@@ -397,12 +397,7 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
 
         if (mCenterItemPosition != centerItem) {
             mCenterItemPosition = centerItem;
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    selectItemCenterPosition(centerItem);
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> selectItemCenterPosition(centerItem));
         }
     }
 

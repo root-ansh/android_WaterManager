@@ -39,7 +39,8 @@ public class QuantityButtonModel {
             = new QuantityButtonModel(R.drawable.ic_add_color_prim, -1);
 
 
-    private int qtyImage, qty;
+    private final int qtyImage;
+    private final int qty;
 
 
     QuantityButtonModel(int qtyImage, int qty) {

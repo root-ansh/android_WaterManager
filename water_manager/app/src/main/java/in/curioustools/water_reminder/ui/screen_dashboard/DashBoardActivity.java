@@ -10,18 +10,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
 
 import in.curioustools.water_reminder.R;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails;
@@ -59,12 +53,9 @@ public class DashBoardActivity extends AppCompatActivity {
         waveLoader.setProgressValue(5);
 
         prefMain = getSharedPreferences(PrefUserDetails.PREF_NAME, MODE_PRIVATE);
-        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-                Log.e("TAG", "onSharedPreferenceChanged: called ");
-                updateWave(sharedPreferences);
-            }
+        listener = (sharedPreferences, s) -> {
+            Log.e("TAG", "onSharedPreferenceChanged: called ");
+            updateWave(sharedPreferences);
         };
 
 
@@ -85,13 +76,13 @@ public class DashBoardActivity extends AppCompatActivity {
         int achieved = preferences.getInt(KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
         int target = preferences.getInt(KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
         int progress = Math.round((float) achieved / target * 100);
-        progress = progress > 100 ? 100 : progress;
+        progress = Math.min(progress, 100);
         Log.e(TAG, "updateWave: called progress=" + progress);
         waveLoader.setProgressValue(progress);
     }
 
     private void loadFragments() {
-        ViewPagerFragmentAdapter adpPager = new ViewPagerFragmentAdapter(this);
+        DashboardFragmentsAdapter adpPager = new DashboardFragmentsAdapter(this);
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         viewPager2.setAdapter(adpPager);
         viewPager2.setUserInputEnabled(false);
@@ -105,76 +96,41 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
-        new TabLayoutMediator(tbTabs, viewPager2,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        tab.setText("");
-                        int iconRes = R.drawable.ic_notif_icon;
-                        switch (position) {
-                            case 0: {
-                                iconRes = R.drawable.ic_daily_logs_white;
-                                break;
-                            }
-                            case 1: {
-                                iconRes = R.drawable.ic_notif_icon;
-                                break;
-                            }
-                            case 2: {
-                                iconRes = R.drawable.ic_settings;
-                                break;
-                            }
+        new TabLayoutMediator(tbTabs, viewPager2, (tab, position) -> {
+                    tab.setText("");
+                    int iconRes = R.drawable.ic_notif_icon;
+                    switch (position) {
+                        case 0: {
+                            iconRes = R.drawable.ic_daily_logs_white;
+                            break;
                         }
-                        tab.setIcon(iconRes);
-
+                        case 1: {
+                            iconRes = R.drawable.ic_notif_icon;
+                            break;
+                        }
+                        case 2: {
+                            iconRes = R.drawable.ic_settings;
+                            break;
+                        }
                     }
+                    tab.setIcon(iconRes);
+
                 }).attach();
 
     }
 
     private void handleSplash() {
         findViewById(R.id.ll_splash).setVisibility(View.VISIBLE);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(500);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Animation anim = AnimationUtils.loadAnimation(DashBoardActivity.this, R.anim.slide_out);
-                        findViewById(R.id.ll_splash).startAnimation(anim);
-                        findViewById(R.id.ll_splash).setVisibility(View.GONE);
+        new Thread(() -> {
+            SystemClock.sleep(500);
+            runOnUiThread(() -> {
+                Animation anim = AnimationUtils.loadAnimation(DashBoardActivity.this, R.anim.slide_out);
+                findViewById(R.id.ll_splash).startAnimation(anim);
+                findViewById(R.id.ll_splash).setVisibility(View.GONE);
 
-                    }
-                });
-            }
+            });
         }).start();
 
-    }
-
-    public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
-
-        private ArrayList<Fragment> fragList = new ArrayList<>();
-
-        ViewPagerFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
-            super(fragmentActivity);
-        }
-
-        void addFragment(Fragment fragment) {
-            fragList.add(fragment);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getItemCount() {
-            return fragList.size();
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            return fragList.get(position);
-        }
     }
 
     @Override

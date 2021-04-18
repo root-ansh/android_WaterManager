@@ -1,7 +1,7 @@
 package in.curioustools.water_reminder.db.pref;
 
 
-import in.curioustools.water_reminder.UiUtilities.TimeUtilities;
+import in.curioustools.water_reminder.utils.TimeUtilities;
 
 public class PrefUserDetails {
     public static final String PREF_NAME = "basicinfo";

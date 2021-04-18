@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Locale;
 
-import in.curioustools.water_reminder.UiUtilities.TimeUtilities;
+import in.curioustools.water_reminder.utils.TimeUtilities;
 import in.curioustools.water_reminder.db.db_water.WaterDbUtils;
 
 @Entity(tableName = WaterDbUtils.TDL.Names.TABLE_NAME)
@@ -72,6 +72,7 @@ public class DailyLog {
         this.achieved = achieved;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return String.format(Locale.ROOT,

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.Locale;
 
-import in.curioustools.water_reminder.UiUtilities.TimeUtilities;
+import in.curioustools.water_reminder.utils.TimeUtilities;
 import in.curioustools.water_reminder.db.db_water.WaterDbUtils;
 
 
@@ -57,7 +57,7 @@ public class TodayEntry {
     }
 
 
-    @Override
+    @Override @NonNull
     public String toString() {
         return String.format(Locale.ROOT, "TodayEntry{id=%d, time='%s', amount=%d}", id, time, amount);
     }

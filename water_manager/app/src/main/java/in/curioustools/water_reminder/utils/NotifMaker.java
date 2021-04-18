@@ -1,4 +1,4 @@
-package in.curioustools.water_reminder.UiUtilities;
+package in.curioustools.water_reminder.utils;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

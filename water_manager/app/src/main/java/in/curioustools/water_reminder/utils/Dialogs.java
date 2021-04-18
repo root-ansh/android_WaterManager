@@ -1,4 +1,4 @@
-package in.curioustools.water_reminder.UiUtilities;
+package in.curioustools.water_reminder.utils;
 
 
 import android.app.AlertDialog;
@@ -165,16 +165,13 @@ public class Dialogs {
 
     public static void showTimeDialog(@NonNull View root, final OnTimeSelectedListener l2) {
         Context c = root.getContext();
-        TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hr, int min) {
-                Calendar date = Calendar.getInstance();
-                date.set(Calendar.HOUR_OF_DAY, hr);
-                date.set(Calendar.MINUTE, min);
-                date.set(Calendar.AM_PM, date.get(Calendar.AM_PM));
-                String timeFormatted = new SimpleDateFormat("h:mm a", Locale.ROOT).format(date.getTime());
-                l2.onTimeSelected(timeFormatted);
-            }
+        TimePickerDialog.OnTimeSetListener listener = (timePicker, hr, min) -> {
+            Calendar date = Calendar.getInstance();
+            date.set(Calendar.HOUR_OF_DAY, hr);
+            date.set(Calendar.MINUTE, min);
+            date.set(Calendar.AM_PM, date.get(Calendar.AM_PM));
+            String timeFormatted = new SimpleDateFormat("h:mm a", Locale.ROOT).format(date.getTime());
+            l2.onTimeSelected(timeFormatted);
         };
 
         TimePickerDialog dialog = new TimePickerDialog(c, listener, 6, 0, false);

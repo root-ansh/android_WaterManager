@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +24,12 @@ import java.util.List;
 import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
-import in.curioustools.water_reminder.UiUtilities.TimeUtilities;
-import in.curioustools.water_reminder.UiUtilities.UtilMethods;
+import in.curioustools.water_reminder.utils.TimeUtilities;
+import in.curioustools.water_reminder.utils.UtilMethods;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.KEYS;
 import in.curioustools.water_reminder.ui.custom.carousal_layout_manager.CarouselLayoutManager;
 import in.curioustools.water_reminder.ui.custom.carousal_layout_manager.CarouselZoomPostLayoutListener;
-import in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment.QuantityDialog.OnPositiveClickListener;
 import in.curioustools.water_reminder.db.db_water.WaterRepo;
 import in.curioustools.water_reminder.db.db_water.model.TodayEntry;
 
@@ -49,7 +47,6 @@ public class DashboardFragment extends Fragment {
 
     private TextView tvAchieved, tvTarget;
     private RecyclerView rvButtons;
-    private RecyclerView rvTodayEntries;
     private QuantityButtonsAdapter adpButtons;
     private TodayEntriesAdapter adpEntries;
 
@@ -64,83 +61,47 @@ public class DashboardFragment extends Fragment {
     @Nullable
     private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
     //----------------</global>---------------------------
-
-    public DashboardFragment() {
-    }
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e(TAG, "onCreateView() called with: inflater = [" + inflater + "], container = [" + container + "], savedInstanceState = [" + savedInstanceState + "]");
-        View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        Log.e(TAG, "onCreateView:  returning view " + v);
-        return v;
+        return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 
 
     @Override
     public void onViewCreated(@NonNull View fragView, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(fragView, savedInstanceState);
-        Log.e(TAG, "onViewCreated() called with: fragView = [" + fragView + "], savedInstanceState = [" + savedInstanceState + "]");
-
-        Log.e(TAG, "onViewCreated: calling initUi() with fragview" + fragView);
         initUi(fragView);
-
-        Log.e(TAG, "onViewCreated: calling setInitialData() ");
         setInitialData();
-
-        Log.e(TAG, "onViewCreated: calling initPrefAndListener(.) with fragview" + fragView);
         initPrefAndListener(fragView);
-
         if (repo != null && prefBasicInfo != null) {
             UtilMethods.makeDateChanges(prefBasicInfo, repo);
         }
         setUiFromPreferences(prefBasicInfo);
-
-
-        Log.e(TAG, "onViewCreated: calling setRepoAndLiveData(.) with fragview" + fragView);
         setRepoAndLiveData(fragView);
-
-        Log.e(TAG, "onViewCreated: calling setListeners() with fragview" + fragView);
         setListeners(fragView);
-
-
     }
 
     private void initUi(View fragView) {
-        Log.e(TAG, "initUi: called");
-
         rvButtons = fragView.findViewById(R.id.rv_buttons);
         CarouselLayoutManager lm = new CarouselLayoutManager(HORIZONTAL, true);
         lm.setPostLayoutListener(new CarouselZoomPostLayoutListener());
-
         rvButtons.setLayoutManager(lm);
         rvButtons.setHasFixedSize(true);
-
         adpButtons = new QuantityButtonsAdapter();
         rvButtons.setAdapter(adpButtons);
-
-        rvTodayEntries = fragView.findViewById(R.id.rv_today_entries);
+        RecyclerView rvTodayEntries = fragView.findViewById(R.id.rv_today_entries);
         rvTodayEntries.setLayoutManager(new LinearLayoutManager(fragView.getContext()));
         rvTodayEntries.setHasFixedSize(true);
         adpEntries = new TodayEntriesAdapter();
         rvTodayEntries.setAdapter(adpEntries);
         ivProgressViewImage = fragView.findViewById(R.id.iv_progress_centre);
         progressView = fragView.findViewById(R.id.progress_daily_intake);
-
         tvAchieved = fragView.findViewById(R.id.fdv_tv_achieved);
         tvTarget = fragView.findViewById(R.id.fdv_tv_target);
-
-
-        Log.e(TAG, "initUi: setted ui: recycler views, progressview,imageview");
-        Log.e(TAG, "initUi: setted adpEntries and adp buttons to empty lists");
-
-
     }
 
     private void setInitialData() {
-        Log.e(TAG, "setInitialData: called");
         progressView.setProgress(0);
         progressView.setMax(0);
 
@@ -149,8 +110,6 @@ public class DashboardFragment extends Fragment {
         adpButtons.setButtonModelList(QuantityButtonModel.getDefaultButtonList());
         rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
         adpEntries.setEntryList(new ArrayList<>());
-        Log.e(TAG, "setInitialData: setted progres to 0,max to 0, setted adpetries as empty list and buttons as button lists");
-
         tvTarget.setText(tvTarget.getContext().getString(R.string.zero_ml));
         tvAchieved.setText("0");
     }
@@ -168,44 +127,28 @@ public class DashboardFragment extends Fragment {
     }
 
     private int getProgressImage(@Nullable SharedPreferences pref) {
-        Log.e(TAG, "getProgressImage: called with pref");
-
         if (pref == null) {
-            Log.e(TAG, "getProgressImage: pref is null so returning default image");
             return R.drawable.ic_progress_centre_happy;
         } else {
-            Log.e(TAG, "getProgressImage: taking out strings from the pref:");
             String sleepTime = pref.getString(KEYS.KEY_SLEEP_TIME, Defaults.SLEEP_TIME);
             String wakeTime = pref.getString(KEYS.KEY_WAKEUP_TIME, Defaults.WAKEUP_TIME);
             String currentTime = TimeUtilities.getCurrentTime();
-            Log.e(TAG, String.format("getProgressImage: sleeptime=%s,waketime=%s,current time=%s", sleepTime, wakeTime, currentTime));
 
             boolean isBetweenSleep = TimeUtilities.isTimeInBetween2Times(sleepTime, wakeTime, currentTime);
             if (isBetweenSleep) {
-                Log.e(TAG, "getProgressImage: curret time is between sleeptimes, so returning sleepy pic");
                 return R.drawable.ic_progress_centre_sleeping;
             } else {
-                Log.e(TAG, "getProgressImage: getting achieved and target amount from pref");
                 int achieved = pref.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
                 int target = pref.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
-
-                Log.e(TAG, String.format("getProgressImage: achievd,target=%d,%d ", achieved, target));
-
                 if (achieved > target) {
-                    Log.e(TAG, "getProgressImage: achievd crossed target, returning that image");
                     return R.drawable.ic_progress_centre_target_crossed;
                 } else if (achieved >= target / 4) {
-                    Log.e(TAG, "getProgressImage:  returning that good progress image");
                     return R.drawable.ic_progress_centre_happy;
                 } else {
-                    Log.e(TAG, "getProgressImage: returning thirsty progress image");
                     return R.drawable.ic_progress_centre_thirsty;
                 }
             }
-
-
         }
-
     }
 
     private void initPrefAndListener(View root) {

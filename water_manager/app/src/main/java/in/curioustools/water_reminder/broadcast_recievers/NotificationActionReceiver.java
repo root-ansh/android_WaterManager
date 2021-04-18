@@ -7,8 +7,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import in.curioustools.water_reminder.UiUtilities.NotifMaker;
-import in.curioustools.water_reminder.UiUtilities.UtilMethods;
+import in.curioustools.water_reminder.utils.NotifMaker;
+import in.curioustools.water_reminder.utils.UtilMethods;
 import in.curioustools.water_reminder.db.db_water.WaterRepo;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.KEYS;

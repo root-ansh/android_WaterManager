@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import in.curioustools.water_reminder.UiUtilities.UtilMethods;
+import in.curioustools.water_reminder.utils.UtilMethods;
 import in.curioustools.water_reminder.db.db_water.WaterRepo;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;

@@ -14,7 +14,7 @@ import in.curioustools.water_reminder.db.db_water.WaterRepo;
 public class DailyLogsViewModelFactory implements ViewModelProvider.Factory {
 
     private static volatile DailyLogsViewModelFactory FACT_INSTANCE;
-    private WaterRepo repo;
+    private final WaterRepo repo;
 
     @NonNull
     static synchronized DailyLogsViewModelFactory getFactory(Context appCtx) {

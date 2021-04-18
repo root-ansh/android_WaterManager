@@ -24,7 +24,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
-import in.curioustools.water_reminder.UiUtilities.Dialogs;
+import in.curioustools.water_reminder.utils.Dialogs;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.services.ServicesHandler;
 

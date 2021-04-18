@@ -3,16 +3,9 @@ package in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-
 import in.curioustools.water_reminder.R;
 
 
@@ -24,7 +17,7 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
     private QuantityButtonClickListener clickListener;
 
     QuantityButtonsAdapter() {
-        this(new ArrayList<QuantityButtonModel>(), null);
+        this(new ArrayList<>(), null);
     }
 
     private QuantityButtonsAdapter(@NonNull ArrayList<QuantityButtonModel> buttonModelList,
@@ -70,13 +63,13 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
 //        return clickListener;
 //    }
 
-     void setClickListener(QuantityButtonClickListener clickListener) {
+    void setClickListener(QuantityButtonClickListener clickListener) {
         this.clickListener = clickListener;
         notifyDataSetChanged();
     }
 
 
-     void addItemInCentre(QuantityButtonModel model) {
+    void addItemInCentre(QuantityButtonModel model) {
         int pos = buttonModelList.size() / 2;
         buttonModelList.add(pos, model);
         notifyItemInserted(pos);
@@ -89,7 +82,8 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
         void onAddNewItemClick();
     }
 
-     private static void showButtonPressAnimation(View view) {
+    /*
+    private static void showButtonPressAnimation(View view) {
         final float shrinkTo = 0.90f;
         final long duration = 100;
         ScaleAnimation grow = new ScaleAnimation(
@@ -115,5 +109,6 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
         set.addAnimation(grow);
         view.startAnimation(set);
     }
+    */
 
 }

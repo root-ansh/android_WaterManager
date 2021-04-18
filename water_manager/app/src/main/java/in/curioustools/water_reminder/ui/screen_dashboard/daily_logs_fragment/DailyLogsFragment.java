@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,29 +57,28 @@ public class DailyLogsFragment extends Fragment {
         final DailyLogsAdapter adp=new DailyLogsAdapter();
         rv.setAdapter(adp);
 
-        adp.setItemsMenuListener(new DailyLogsAdapter.DlRvItemsMenuClickListener() {
-            @Override
-            public void onDeleteButtonClick(@Nullable DailyLog entry) {
-                if(model!=null)model.removeLog(entry);
-            }
+        adp.setItemsMenuListener(entry -> {
+            if(model!=null)model.removeLog(entry);
         });
 
         if(model!=null){
-            LiveData<List<DailyLog>> liveLogs=model.getAllLogs();
+            LiveData<List<DailyLog>> liveLogs= null;
+            try {
+                liveLogs = model.getAllLogs();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if(liveLogs!=null){
-                liveLogs.observe(this, new Observer<List<DailyLog>>() {
-                    @Override
-                    public void onChanged(List<DailyLog> dailyLogs) {
-                        if(dailyLogs==null||dailyLogs.size()==0){
-                            llPlaceholder.setVisibility(View.VISIBLE);
-                            rv.setVisibility(View.GONE);
-                        }
-                        else{
-                            llPlaceholder.setVisibility(View.GONE);
-                            rv.setVisibility(View.VISIBLE);
-                        }
-                        adp.setLogList(dailyLogs);
+                liveLogs.observe(this, dailyLogs -> {
+                    if(dailyLogs==null||dailyLogs.size()==0){
+                        llPlaceholder.setVisibility(View.VISIBLE);
+                        rv.setVisibility(View.GONE);
                     }
+                    else{
+                        llPlaceholder.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
+                    }
+                    adp.setLogList(dailyLogs);
                 });
             }
         }

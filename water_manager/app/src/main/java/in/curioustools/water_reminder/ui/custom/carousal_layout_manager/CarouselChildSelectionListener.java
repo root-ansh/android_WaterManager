@@ -5,8 +5,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-/* Ansh note: this libary looked like a deprecated library, without no updates by the dev for last 1 yr, so i pulled it and am currently using it inside the code ittself
-* */
+/***
+ * Ansh note: this libary looked like a deprecated library, without no updates by the dev for last
+ * 1 yr, so i pulled it and am currently using it inside the code ittself
+ * */
 
 
 public abstract class CarouselChildSelectionListener {

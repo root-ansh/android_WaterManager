@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,8 +18,8 @@ import in.curioustools.water_reminder.db.db_water.model.TodayEntry;
 
 public class WaterRepo {
     //always check if you are handling null correctly
-    private WaterDao dao;
-    private ExecutorService ioExecutorService;
+    private final WaterDao dao;
+    private final ExecutorService ioExecutorService;
     private static volatile WaterRepo REPO_INSTANCE;
 
     private static final String TAG = "WATER_REPO";
@@ -49,12 +48,7 @@ public class WaterRepo {
 
     public void addNewDailyLog(@Nullable final DailyLog log) {
         if (log != null) {
-            ioExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    dao.insertDailyLog(log);
-                }
-            });
+            ioExecutorService.execute(() -> dao.insertDailyLog(log));
         } else {
             Log.e(TAG, "addNewDailyLog: passed log is null");
         }
@@ -62,12 +56,7 @@ public class WaterRepo {
 
     public void removeOldDailyLog(@Nullable final DailyLog log) {
         if (log != null) {
-            ioExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    dao.deleteDailyLog(log);
-                }
-            });
+            ioExecutorService.execute(() -> dao.deleteDailyLog(log));
         } else {
             Log.e(TAG, "removeOldDailyLog: passed log is null");
         }
@@ -98,12 +87,7 @@ public class WaterRepo {
     @Nullable
     private DailyLog getDailyLogByDetails(final String date) {
         try {
-            return ioExecutorService.submit(new Callable<DailyLog>() {
-                @Override
-                public DailyLog call() {
-                    return dao.getDailyLogByDate(date);
-                }
-            }).get();
+            return ioExecutorService.submit(() -> dao.getDailyLogByDate(date)).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
@@ -151,12 +135,7 @@ public class WaterRepo {
     public void addNewTodayEntry(@Nullable final TodayEntry entry) {
         if (entry != null) {
 
-            ioExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    dao.insertToday(entry);
-                }
-            });
+            ioExecutorService.execute(() -> dao.insertToday(entry));
         } else {
             Log.e(TAG, "addNewTodayEntry: passed entry is null");
         }
@@ -165,12 +144,7 @@ public class WaterRepo {
 
     public void removeOldTodayEntry(@Nullable final TodayEntry entry) {
         if (entry != null) {
-            ioExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    dao.deleteToday(entry);
-                }
-            });
+            ioExecutorService.execute(() -> dao.deleteToday(entry));
         } else {
             Log.e(TAG, "removeOldTodayEntry: passed entry is null");
         }
@@ -179,14 +153,7 @@ public class WaterRepo {
     }
 
     public void removeAllTodayEntries() {
-        ioExecutorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.deleteAllEntries();
-            }
-        });
-
-
+        ioExecutorService.execute(dao::deleteAllEntries);
     }
 
 //    public void modifyOldTodayEntry(@Nullable final TodayEntry entry) {

@@ -29,8 +29,8 @@ public class ServicesHandler {
     private static final String TAG_PERIODIC_NOTIFY_REQ = "periodic_notify_service_req";
 
     private static final int NOTIF_MINUTES=15;
-    private WorkManager workManagerObj;
-    private SharedPreferences prefUUID;
+    private final WorkManager workManagerObj;
+    private final SharedPreferences prefUUID;
 
     private ServicesHandler(Context ctx) {
         Context appCtx = ctx.getApplicationContext();

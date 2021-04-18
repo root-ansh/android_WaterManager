@@ -12,9 +12,9 @@ import androidx.work.WorkerParameters;
 
 import java.util.Locale;
 
-import in.curioustools.water_reminder.UiUtilities.NotifMaker;
+import in.curioustools.water_reminder.utils.NotifMaker;
 import in.curioustools.water_reminder.R;
-import in.curioustools.water_reminder.UiUtilities.TimeUtilities;
+import in.curioustools.water_reminder.utils.TimeUtilities;
 import in.curioustools.water_reminder.broadcast_recievers.NotificationActionReceiver;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
