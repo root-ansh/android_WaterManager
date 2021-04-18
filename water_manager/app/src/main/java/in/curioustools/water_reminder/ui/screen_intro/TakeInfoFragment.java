@@ -5,7 +5,6 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -92,19 +90,8 @@ public class TakeInfoFragment extends Fragment {
         initPref(rootView);
         setUiData(prefBasicInfo);
 
-        ibtMan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                putInfoInPref(KEYS.KEY_GENDER, UserGender.MALE);
-            }
-        });
-        ibtWomen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                putInfoInPref(KEYS.KEY_GENDER, UserGender.FEMALE);
-
-            }
-        });
+        ibtMan.setOnClickListener(view -> putInfoInPref(KEYS.KEY_GENDER, UserGender.MALE));
+        ibtWomen.setOnClickListener(view -> putInfoInPref(KEYS.KEY_GENDER, UserGender.FEMALE));
         wheelView.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onWheelItemChanged(WheelView wheelView, int position) {
@@ -117,65 +104,29 @@ public class TakeInfoFragment extends Fragment {
 
             }
         });
-        tvSleepTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTimePicker(KEY_TIME.SLEEP_TIME, 23, rootView);
-            }
-        });
-        tvWakeup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTimePicker(KEY_TIME.WAKE_UP_TIME, 6, rootView);
-            }
-        });
-        btLots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.LOTS);
+        tvSleepTime.setOnClickListener(view -> showTimePicker(KEY_TIME.SLEEP_TIME, 23, rootView));
+        tvWakeup.setOnClickListener(view -> showTimePicker(KEY_TIME.WAKE_UP_TIME, 6, rootView));
+        btLots.setOnClickListener(view -> putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.LOTS));
 
-            }
-        });
+        btSome.setOnClickListener(view -> putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.SOME));
 
-        btSome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.SOME);
+        btFew.setOnClickListener(view -> putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.AFEW));
 
-            }
-        });
+        btNone.setOnClickListener(view -> putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.NONE));
 
-        btFew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.AFEW);
+        btContinue.setOnClickListener(view -> {
+            //handle show/hide animations
+            if (!allBoxesShown) {
+                showInformationBoxes(rootView);
+            } else {
+                putInfoInPref(KEYS.KEY_DATE_TODAY, TimeUtilities.getCurrentDate());
+                putInfoInPref(KEYS.KEY_SHOWN_INFO_ACTIVITY,true);
+                putInfoInPref(KEYS.KEY_SHOW_NOTIFS,true);
+                putInfoInPref(KEYS.KEY_SHOW_LOGS,true);
+                ServicesHandler.updateServices(rootView.getContext());
 
-            }
-        });
+                showContinueDialog(rootView.getContext());
 
-        btNone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                putInfoInPref(KEYS.KEY_ACTIVITY, UserActivity.NONE);
-            }
-        });
-
-        btContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //handle show/hide animations
-                if (!allBoxesShown) {
-                    showInformationBoxes(rootView);
-                } else {
-                    putInfoInPref(KEYS.KEY_DATE_TODAY, TimeUtilities.getCurrentDate());
-                    putInfoInPref(KEYS.KEY_SHOWN_INFO_ACTIVITY,true);
-                    putInfoInPref(KEYS.KEY_SHOW_NOTIFS,true);
-                    putInfoInPref(KEYS.KEY_SHOW_LOGS,true);
-                    ServicesHandler.updateServices(rootView.getContext());
-
-                    showContinueDialog(rootView.getContext());
-
-                }
             }
         });
     }
@@ -184,20 +135,17 @@ public class TakeInfoFragment extends Fragment {
 
     private void showTimePicker(final KEY_TIME sleepOrWake, int defTimeHour, View rootView) {
         Context c = rootView.getContext();
-        TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hr, int min) {
-                Calendar date = Calendar.getInstance();
-                date.set(Calendar.HOUR_OF_DAY, hr);
-                date.set(Calendar.MINUTE, min);
-                date.set(Calendar.AM_PM, date.get(Calendar.AM_PM));
-                String timeFormatted = new SimpleDateFormat("h:mm a", Locale.ROOT).format(date.getTime());
-                if (prefBasicInfo != null) {
-                    if (sleepOrWake == KEY_TIME.SLEEP_TIME) {
-                        putInfoInPref(KEYS.KEY_SLEEP_TIME, timeFormatted);
-                    } else {
-                        putInfoInPref(KEYS.KEY_WAKEUP_TIME, timeFormatted);
-                    }
+        TimePickerDialog.OnTimeSetListener listener = (timePicker, hr, min) -> {
+            Calendar date = Calendar.getInstance();
+            date.set(Calendar.HOUR_OF_DAY, hr);
+            date.set(Calendar.MINUTE, min);
+            date.set(Calendar.AM_PM, date.get(Calendar.AM_PM));
+            String timeFormatted = new SimpleDateFormat("h:mm a", Locale.ROOT).format(date.getTime());
+            if (prefBasicInfo != null) {
+                if (sleepOrWake == KEY_TIME.SLEEP_TIME) {
+                    putInfoInPref(KEYS.KEY_SLEEP_TIME, timeFormatted);
+                } else {
+                    putInfoInPref(KEYS.KEY_WAKEUP_TIME, timeFormatted);
                 }
             }
         };
@@ -222,24 +170,15 @@ public class TakeInfoFragment extends Fragment {
 
         dialogBuilder
                 .setView(v)
-                .setPositiveButton("PROCEED", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        int dailyIntake = Integer.parseInt(etDialog.getText().toString());
-                        putInfoInPref(KEYS.KEY_DAILY_TARGET, dailyIntake);
+                .setPositiveButton("PROCEED", (dialogInterface, i) -> {
+                    int dailyIntake = Integer.parseInt(etDialog.getText().toString());
+                    putInfoInPref(KEYS.KEY_DAILY_TARGET, dailyIntake);
 
-                        Intent intent = new Intent(TakeInfoFragment.this.getActivity(), DashBoardActivity.class);
-                        startActivity(intent);
-                        if (getActivity() != null) getActivity().finish();
-                    }
+                    Intent intent = new Intent(TakeInfoFragment.this.getActivity(), DashBoardActivity.class);
+                    startActivity(intent);
+                    if (getActivity() != null) getActivity().finish();
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-                    }
-                })
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
         ;
 
         AlertDialog dialog = dialogBuilder.create();
@@ -253,24 +192,15 @@ public class TakeInfoFragment extends Fragment {
         static void animateWaveLoader(final WaveLoadingView loadingView, int start, int end) {
             ValueAnimator animator = ValueAnimator.ofInt(start, end);
             animator.setDuration(1000);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    loadingView.setProgressValue((int) valueAnimator.getAnimatedValue());
-                }
-            });
+            animator.addUpdateListener(valueAnimator -> loadingView.setProgressValue((int) valueAnimator.getAnimatedValue()));
             animator.start();
         }
 
         static void animateNumEditText(final EditText etDialog, int start, int end) {
+            //todo pass initial valuse
             ValueAnimator animator = ValueAnimator.ofInt(start, end);
             animator.setDuration(1500);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    etDialog.setText(String.format("%s", valueAnimator.getAnimatedValue().toString()));
-                }
-            });
+            animator.addUpdateListener(valueAnimator -> etDialog.setText(String.format("%s", valueAnimator.getAnimatedValue().toString())));
             animator.start();
         }
 
@@ -317,13 +247,7 @@ public class TakeInfoFragment extends Fragment {
 
     private void initPref(View root) {
         prefBasicInfo = root.getContext().getSharedPreferences(PREF_NAME,MODE_PRIVATE);
-        prefListener = new OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-
-                setUiData(sharedPreferences);
-            }
-        };
+        prefListener = (sharedPreferences, s) -> setUiData(sharedPreferences);
 
     }
 
@@ -447,7 +371,7 @@ public class TakeInfoFragment extends Fragment {
         } else {
             llActivity.setVisibility(View.VISIBLE);// all boxes are already being shown, so simply set all boxes shown to true
             allBoxesShown = true;
-            btContinue.setText("FINISH");
+            btContinue.setText(btContinue.getContext().getString(R.string.finish));
         }
         //NestedScrollView nsv = findViewById(R.id.nested_scroll_view);
         //nsv.fullScroll(View.FOCUS_DOWN);

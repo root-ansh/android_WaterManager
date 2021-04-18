@@ -25,9 +25,6 @@ import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
 import in.curioustools.water_reminder.UiUtilities.Dialogs;
-import in.curioustools.water_reminder.UiUtilities.Dialogs.OnGenderSelectedListener;
-import in.curioustools.water_reminder.UiUtilities.Dialogs.OnUserActivitySelectedListener;
-import in.curioustools.water_reminder.UiUtilities.Dialogs.OnWeightSelectedListener;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.services.ServicesHandler;
 
@@ -120,14 +117,14 @@ public class SettingsFragment extends Fragment {
         tvIntake.setText(String.format(Locale.ROOT, "%d ml", intake));
 
         if (!showDailyNotif) {
-            tvDailyNotifs.setText("Show notification reminder to drink water every few hours is OFF");
+            tvDailyNotifs.setText(tvDailyNotifs.getContext().getString(R.string.notif_reminder_desc, "OFF"));
             swDailyNotifs.setChecked(false);
             llSleep.setVisibility(View.GONE);
             llWakeup.setVisibility(View.GONE);
             flLadder1.setVisibility(View.GONE);
             flLadder2.setVisibility(View.GONE);
         } else {
-            tvDailyNotifs.setText("Show notification reminder to drink water every few hours is ON");
+            tvDailyNotifs.setText(tvDailyNotifs.getContext().getString(R.string.notif_reminder_desc, "ON"));
             swDailyNotifs.setChecked(true);
             llSleep.setVisibility(View.VISIBLE);
             llWakeup.setVisibility(View.VISIBLE);
@@ -142,114 +139,43 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setUiClickListeners(final View root) {
-        llAbout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://github.com/root-ansh/WaterManager"));
-                String title ="Open With:";
-                Intent chooser = Intent.createChooser(intent, title);
-                root.getContext().startActivity(chooser);
+        llAbout.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://github.com/root-ansh/WaterManager"));
+            String title ="Open With:";
+            Intent chooser = Intent.createChooser(intent, title);
+            root.getContext().startActivity(chooser);
+        });
+
+        llGender.setOnClickListener(view -> Dialogs.showGenderDialog(root, gender -> updatePref(KEYS.KEY_GENDER, gender.name())));
+        llWeight.setOnClickListener(view -> Dialogs.showWeightDialog(root, weight -> updatePref(KEYS.KEY_WEIGHT, weight)));
+
+        llActivity.setOnClickListener(view -> Dialogs.showUserActivitySelectionDialog(root, userActivity -> updatePref(KEYS.KEY_ACTIVITY, userActivity.name())));
+
+        llIntake.setOnClickListener(view -> {
+            int currentVal=Defaults.DAILY_TARGET;
+            if(prefBasicInfo!=null) {
+                currentVal = prefBasicInfo.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
+            }
+            Dialogs.showEditIntakeDialog(root, newIntake -> updatePref(KEYS.KEY_DAILY_TARGET, newIntake),currentVal);
+        });
+
+        llDailyNotif.setOnClickListener(view -> {
+            if(prefBasicInfo!=null) {
+                boolean showNotif = prefBasicInfo.getBoolean(KEYS.KEY_SHOW_NOTIFS, Defaults.SHOW_NOTIF);
+                updatePref(KEYS.KEY_SHOW_NOTIFS, !showNotif);
             }
         });
 
-        llGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialogs.showGenderDialog(root, new OnGenderSelectedListener() {
-                    @Override
-                    public void onUserSelected(UserGender gender) {
-                        updatePref(KEYS.KEY_GENDER, gender.name());
-                    }
-                });
-            }
-        });
-        llWeight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialogs.showWeightDialog(root, new OnWeightSelectedListener() {
-                    @Override
-                    public void onWeightSelected(int weight) {
-                        updatePref(KEYS.KEY_WEIGHT, weight);
-                    }
+        llWakeup.setOnClickListener(view -> Dialogs.showTimeDialog(root, time -> updatePref(KEYS.KEY_WAKEUP_TIME,time)));
 
-                });
-            }
-        });
-
-        llActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialogs.showUserActivitySelectionDialog(root, new OnUserActivitySelectedListener() {
-                    @Override
-                    public void onUsrActivitySelected(UserActivity userActivity) {
-                        updatePref(KEYS.KEY_ACTIVITY, userActivity.name());
-                    }
-                });
-            }
-        });
-
-        llIntake.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int currentVal=Defaults.DAILY_TARGET;
-                if(prefBasicInfo!=null) {
-                    currentVal = prefBasicInfo.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
-                }
-                Dialogs.showEditIntakeDialog(root,new Dialogs.OnIntakeEditedListener(){
-                    @Override
-                    public void onIntakeEdited(int newIntake) {
-                        updatePref(KEYS.KEY_DAILY_TARGET, newIntake);
-                    }
-                },currentVal);
-            }
-        });
-
-        llDailyNotif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(prefBasicInfo!=null) {
-                    boolean showNotif = prefBasicInfo.getBoolean(KEYS.KEY_SHOW_NOTIFS, Defaults.SHOW_NOTIF);
-                    updatePref(KEYS.KEY_SHOW_NOTIFS, !showNotif);
-                }
-            }
-        });
-
-        llWakeup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialogs.showTimeDialog(root, new Dialogs.OnTimeSelectedListener() {
-                    @Override
-                    public void onTimeSelected(String time) {
-                        updatePref(KEYS.KEY_WAKEUP_TIME,time);
-                    }
-                });
-            }
-        });
-
-        llSleep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialogs.showTimeDialog(root, new Dialogs.OnTimeSelectedListener() {
-                    @Override
-                    public void onTimeSelected(String time) {
-                        updatePref(KEYS.KEY_SLEEP_TIME,time);
-                    }
-                });
-            }
-        });
+        llSleep.setOnClickListener(view -> Dialogs.showTimeDialog(root, time -> updatePref(KEYS.KEY_SLEEP_TIME,time)));
     }
 
     private void initPrefAndListener(final View root) {
 
         prefBasicInfo = root.getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        prefListener = new OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-                onPreferenceUpdated(sharedPreferences,root);
-
-            }
-        };
+        prefListener = (sharedPreferences, s) -> onPreferenceUpdated(sharedPreferences,root);
     }
 
     private void onPreferenceUpdated(SharedPreferences sharedPreferences,View root) {

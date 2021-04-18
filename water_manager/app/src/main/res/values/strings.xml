@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Water Manager</string>
     <string name="zero_ml">0 ml</string>
+    <string name="finish">FINISH</string>
+    <string name="notif_reminder_desc">Show notification reminder to drink water every few hours is %s</string>
+    <string name="add_new">Add new</string>
 
 </resources>

@@ -12,11 +12,11 @@ import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
 
-class RvHolder extends RecyclerView.ViewHolder {
+class QuantityButtonsVH extends RecyclerView.ViewHolder {
     ImageButton ibtQty;
     TextView tvQty;
 
-    RvHolder(@NonNull View itemView) {
+    QuantityButtonsVH(@NonNull View itemView) {
         super(itemView);
         ibtQty = itemView.findViewById(R.id.ibt_qty_btn);
         tvQty = itemView.findViewById(R.id.tv_qty_text);
@@ -31,20 +31,17 @@ class RvHolder extends RecyclerView.ViewHolder {
         if (!isLast) {
             tvQty.setText(String.format(Locale.getDefault(), "%d ml", qty));
         } else {
-            tvQty.setText("Add new");
+            tvQty.setText(tvQty.getContext().getString(R.string.add_new));
         }
-        ibtQty.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isLast) {
-                    listener.onAddNewItemClick();
-                } else {
-                    listener.onItemClick(qty);
-                }
+        ibtQty.setOnClickListener(view -> {
+            if (isLast) {
+                listener.onAddNewItemClick();
+            } else {
+                listener.onItemClick(qty);
+            }
 
 //                    showButtonPressAnimation(view);
 
-            }
         });
     }
 

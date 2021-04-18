@@ -3,7 +3,6 @@ package in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,12 +34,7 @@ class QuantityDialog {
         this.builder = new AlertDialog.Builder(ctx)
                 .setView(dialogView)
                 .setCancelable(false)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
     }
 
     private View createView(Context ctx) {
@@ -65,7 +59,7 @@ class QuantityDialog {
         seekQty.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                progress = (progress < QUANTITY_MIN) ? QUANTITY_MIN : progress;
+                progress = Math.max(progress, QUANTITY_MIN);
                 tvQty.setText(String.format(Locale.ROOT, "%d ml", progress));
                 int resID = getResForQty(progress);
                 ivQty.setImageResource(resID);
@@ -85,14 +79,11 @@ class QuantityDialog {
     }
 
     void setOnPositiveClickListener(@Nullable final OnPositiveClickListener listener) {
-        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (listener != null) {
-                    listener.onPositiveButtonClick(currentData);
-                }
-                dialogInterface.dismiss();
+        builder.setPositiveButton("Done", (dialogInterface, i) -> {
+            if (listener != null) {
+                listener.onPositiveButtonClick(currentData);
             }
+            dialogInterface.dismiss();
         });
 
     }

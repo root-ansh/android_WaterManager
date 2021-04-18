@@ -16,7 +16,6 @@ import static in.curioustools.water_reminder.db.pref.PrefUserDetails.*;
 public class StartActivity extends AppCompatActivity {
 
     //private static final String TAG = "startActivity";
-    Class classToBeLaunched;
 
 
     @Override
@@ -29,7 +28,8 @@ public class StartActivity extends AppCompatActivity {
 
         SharedPreferences pref= getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         boolean shownOneTime=pref.getBoolean(KEYS.KEY_SHOWN_INFO_ACTIVITY, Defaults.HAS_SHOWN_INTRO_INFO_ACTIVITY);
-        classToBeLaunched = shownOneTime ?DashBoardActivity.class:IntroInfoActivity.class;
+        //noinspection rawtypes
+        Class classToBeLaunched = shownOneTime ? DashBoardActivity.class : IntroInfoActivity.class;
         startActivity(new Intent(StartActivity.this, classToBeLaunched));
         finish();
 

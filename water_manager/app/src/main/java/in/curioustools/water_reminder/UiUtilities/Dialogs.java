@@ -4,7 +4,6 @@ package in.curioustools.water_reminder.UiUtilities;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -40,40 +39,24 @@ public class Dialogs {
     public static void showGenderDialog(@NonNull View root, @NonNull final OnGenderSelectedListener listener) {
         final View v = createView(root.getContext(), ViewType.Gender);
 
-        v.findViewById(R.id.dif_ibt_man).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gender = UserGender.MALE;
-                v.findViewById(R.id.dif_ibt_man).setSelected(true);
-                v.findViewById(R.id.dif_ibt_woman).setSelected(false);
-            }
+        v.findViewById(R.id.dif_ibt_man).setOnClickListener(view -> {
+            gender = UserGender.MALE;
+            v.findViewById(R.id.dif_ibt_man).setSelected(true);
+            v.findViewById(R.id.dif_ibt_woman).setSelected(false);
         });
 
-        v.findViewById(R.id.dif_ibt_woman).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gender = UserGender.FEMALE;
-                v.findViewById(R.id.dif_ibt_man).setSelected(false);
-                v.findViewById(R.id.dif_ibt_woman).setSelected(true);
+        v.findViewById(R.id.dif_ibt_woman).setOnClickListener(view -> {
+            gender = UserGender.FEMALE;
+            v.findViewById(R.id.dif_ibt_man).setSelected(false);
+            v.findViewById(R.id.dif_ibt_woman).setSelected(true);
 
-            }
         });
 
         new AlertDialog.Builder(root.getContext())
                 .setCancelable(false)
                 .setView(v)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onUserSelected(gender);
-                    }
-                })
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Done", (dialogInterface, i) -> listener.onUserSelected(gender))
                 .show();
 
 
@@ -112,18 +95,8 @@ public class Dialogs {
         new AlertDialog.Builder(root.getContext())
                 .setCancelable(false)
                 .setView(v)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onWeightSelected(weight);
-                    }
-                })
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Done", (dialogInterface, i) -> listener.onWeightSelected(weight))
                 .show();
     }
 
@@ -137,31 +110,23 @@ public class Dialogs {
         new AlertDialog.Builder(root.getContext())
                 .setCancelable(false)
                 .setView(v)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        RadioGroup rg = v.findViewById(R.id.dif_rg_user_activity);
-                        switch (rg.getCheckedRadioButtonId()) {
-                            case R.id.dif_rb_lots:
-                                listener.onUsrActivitySelected(UserActivity.LOTS);
-                                break;
-                            case R.id.dif_rb_some:
-                                listener.onUsrActivitySelected(UserActivity.SOME);
-                                break;
-                            case R.id.dif_rb_few:
-                                listener.onUsrActivitySelected(UserActivity.AFEW);
-                                break;
-                            case R.id.dif_rb_none:
-                                listener.onUsrActivitySelected(UserActivity.NONE);
-                                break;
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Done", (dialogInterface, i) -> {
+                    RadioGroup rg = v.findViewById(R.id.dif_rg_user_activity);
+                    switch (rg.getCheckedRadioButtonId()) {
+                        case R.id.dif_rb_lots:
+                            listener.onUsrActivitySelected(UserActivity.LOTS);
+                            break;
+                        case R.id.dif_rb_some:
+                            listener.onUsrActivitySelected(UserActivity.SOME);
+                            break;
+                        case R.id.dif_rb_few:
+                            listener.onUsrActivitySelected(UserActivity.AFEW);
+                            break;
+                        case R.id.dif_rb_none:
+                            listener.onUsrActivitySelected(UserActivity.NONE);
+                            break;
 
-                        }
                     }
                 })
 
@@ -180,24 +145,16 @@ public class Dialogs {
         new AlertDialog.Builder(root.getContext())
                 .setCancelable(false)
                 .setView(v)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Done", (dialogInterface, i) -> {
 
-                        int val;
-                        try {
-                            val = Integer.parseInt((et.getText().toString()));
-                        } catch (Exception e) {
-                            val = PrefUserDetails.Defaults.DAILY_TARGET;
-                        }
-                        listener.onIntakeEdited(val);
+                    int val;
+                    try {
+                        val = Integer.parseInt((et.getText().toString()));
+                    } catch (Exception e) {
+                        val = PrefUserDetails.Defaults.DAILY_TARGET;
                     }
+                    listener.onIntakeEdited(val);
                 })
                 .show();
     }

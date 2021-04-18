@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+//    todo upgrade build version code/name
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
     defaultConfig {

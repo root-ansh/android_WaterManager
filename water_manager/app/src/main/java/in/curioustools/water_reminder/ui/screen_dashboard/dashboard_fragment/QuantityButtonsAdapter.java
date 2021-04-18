@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import in.curioustools.water_reminder.R;
 
 
-public class QuantityButtonsAdapter extends RecyclerView.Adapter<RvHolder> {
+public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtonsVH> {
 
 
     @NonNull
@@ -35,15 +35,15 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<RvHolder> {
 
     @NonNull
     @Override
-    public RvHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public QuantityButtonsVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.layout_recycler_buttons, parent, false);
-        return new RvHolder(v);
+        return new QuantityButtonsVH(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RvHolder holder, int pos) {
+    public void onBindViewHolder(@NonNull QuantityButtonsVH holder, int pos) {
         QuantityButtonModel data = buttonModelList.get(pos);
 
         //is last is a check based on which our code to add new data will get triggered.
