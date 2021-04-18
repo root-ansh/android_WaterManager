@@ -12,6 +12,7 @@ import androidx.work.WorkerParameters;
 
 import java.util.Locale;
 
+import in.curioustools.water_reminder.utils.JVMBasedUtils;
 import in.curioustools.water_reminder.utils.NotifMaker;
 import in.curioustools.water_reminder.R;
 import in.curioustools.water_reminder.utils.TimeUtilities;
@@ -53,12 +54,23 @@ public class PeriodicNotificationService extends Worker {
         String date = pref.getString(KEYS.KEY_DATE_TODAY, Defaults.DATE_TODAY);
         int achieved = pref.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
         int target = pref.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
+        boolean isImperialEnabled =pref.getBoolean(KEYS.KEY_SHOW_IMPERIAL_MM,Defaults.SHOW_IMPERIAL_MM);
+
+        int newAdditionQty = 150;
+        String unit = "ML";
+
+        if(isImperialEnabled){
+            achieved = JVMBasedUtils.convertToFluidOunces(achieved);
+            target =  JVMBasedUtils.convertToFluidOunces(target);
+            unit = "Fl. Oz";
+            newAdditionQty = JVMBasedUtils.convertToFluidOunces(newAdditionQty);
+        }
 
 
         String title = "Hey! Drink some Water!";
 
-        String details = String.format(Locale.ROOT, "%s Today's Progress:%d/%d ml. ", date, achieved, target);
-        details += "\n Tap To Add 150 ml water to your daily Progress.";
+        String details = String.format(Locale.ROOT, "%s . Today's Progress:%d / %d %s. ", date, achieved, target,unit);
+        details += "\n Tap To Add "+newAdditionQty+unit+" water to your daily Progress.";
         int resId = R.drawable.ic_notif_icon;
 
         //creating actions
@@ -67,7 +79,7 @@ public class PeriodicNotificationService extends Worker {
         PendingIntent piDrankWater = PendingIntent.getBroadcast(
                 ctx, NotificationActionReceiver.RECEIVER_RQ_CODE1, i, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action action1 = new NotificationCompat.Action(
-                R.drawable.ic_logo, "Add 150 ml", piDrankWater);
+                R.drawable.ic_logo, "Add "+newAdditionQty+unit, piDrankWater);
 
 
         Intent i2 = new Intent(getApplicationContext(), NotificationActionReceiver.class);

@@ -27,13 +27,14 @@ public class NotifMaker {
     private static final String CHANNEL_ID = "notify-tea";
     private int CHANNEL_IMPORTANCE;
 
-    private int NOTIF_PRIORITY =NotificationCompat.PRIORITY_HIGH;
+    private final int NOTIF_PRIORITY =NotificationCompat.PRIORITY_HIGH;
     private static final String CHANNEL_NAME = "CHANNEL_NAME";
     private static final String CHANNEL_DESC = "CHANNEL_DESC";
 
-    private int smallIconID;
-    private Context appCtx;
-    private String notificationTitle, notificationDescription;
+    private final int smallIconID;
+    private final Context appCtx;
+    private final String notificationTitle;
+    private final String notificationDescription;
 
     @Nullable
     private PendingIntent pendingIntent;
