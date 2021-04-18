@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import in.curioustools.water_reminder.R;
@@ -35,6 +34,7 @@ public class DailyLogsFragment extends Fragment implements SharedPreferences.OnS
     private static final String TAG = "DAILY_LOGS_FRAGMENT";
     private final DailyLogsAdapter adp = new DailyLogsAdapter();
 
+    @Nullable
     private SharedPreferences prefBasicInfo;
 
     public DailyLogsFragment() {
@@ -108,6 +108,7 @@ public class DailyLogsFragment extends Fragment implements SharedPreferences.OnS
     }
 
     private void updateAdapterForImperialMeasurements() {
+        if(prefBasicInfo == null) return;
         boolean showMetricsAsImperial = prefBasicInfo.getBoolean(
                 PrefUserDetails.KEYS.KEY_SHOW_IMPERIAL_MM,
                 PrefUserDetails.Defaults.SHOW_IMPERIAL_MM
