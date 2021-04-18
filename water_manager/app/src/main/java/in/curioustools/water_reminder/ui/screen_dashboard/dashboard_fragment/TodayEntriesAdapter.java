@@ -65,6 +65,9 @@ public class TodayEntriesAdapter extends RecyclerView.Adapter<TodayEntriesVH> {
         notifyDataSetChanged();
     }
 
+    public void updateMetricsAsImperial(boolean showMetricsAsImperial) {
+    }
+
     //----------------------------------------------------------------------------------------------
 
     interface OnMyMenuItemClickListener {

@@ -4,27 +4,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import in.curioustools.water_reminder.R;
 
-
 public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtonsVH> {
-
-
     @NonNull
-    private ArrayList<QuantityButtonModel> buttonModelList;
-    private QuantityButtonClickListener clickListener;
+    private ArrayList<QuantityButtonModel> buttonModelList = new ArrayList<>();
 
-    QuantityButtonsAdapter() {
-        this(new ArrayList<>(), null);
-    }
+    @Nullable
+    private QuantityButtonClickListener clickListener = null;
 
-    private QuantityButtonsAdapter(@NonNull ArrayList<QuantityButtonModel> buttonModelList,
-                                   QuantityButtonClickListener listener) {
-        this.buttonModelList = buttonModelList;
-        this.clickListener = listener;
-    }
+    private boolean imperialMetrics = false;
 
     @NonNull
     @Override
@@ -41,7 +33,7 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
 
         //is last is a check based on which our code to add new data will get triggered.
         boolean isLast = (data == QuantityButtonModel.QUANTITY_ADD_NEW);
-        holder.bindData(data.getQtyImage(), data.getQty(), clickListener, isLast);
+        holder.bindData(data.getQtyImage(), data.getQty(), clickListener, isLast, imperialMetrics);
     }
 
     @Override
@@ -49,66 +41,29 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
         return buttonModelList.size();
     }
 
-//    @NonNull
-//    public ArrayList<QuantityButtonModel> getButtonModelList() {
-//        return buttonModelList;
-//    }
-
-    void setButtonModelList(@NonNull ArrayList<QuantityButtonModel> buttonModelList) {
-        this.buttonModelList = buttonModelList;
-        notifyDataSetChanged();
-    }
-
-//    public QuantityButtonClickListener getClickListener() {
-//        return clickListener;
-//    }
-
-    void setClickListener(QuantityButtonClickListener clickListener) {
-        this.clickListener = clickListener;
-        notifyDataSetChanged();
-    }
-
-
-    void addItemInCentre(QuantityButtonModel model) {
+    public void addItemInCentre(QuantityButtonModel model) {
         int pos = buttonModelList.size() / 2;
         buttonModelList.add(pos, model);
         notifyItemInserted(pos);
     }
 
-
-    interface QuantityButtonClickListener {
-        void onQtyButtonClick(int qty);
-
-        void onAddNewQtyButtonClick();
+    public void updateButtonModelList(@NonNull ArrayList<QuantityButtonModel> buttonModelList) {
+        this.buttonModelList = buttonModelList;
+        notifyDataSetChanged();
     }
 
-    /*
-    private static void showButtonPressAnimation(View view) {
-        final float shrinkTo = 0.90f;
-        final long duration = 100;
-        ScaleAnimation grow = new ScaleAnimation(
-                shrinkTo, 1,
-                shrinkTo, 1,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
 
-        grow.setDuration(duration / 2);
-
-
-        ScaleAnimation shrink = new ScaleAnimation(
-                1, shrinkTo,
-                1, shrinkTo,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        shrink.setDuration(duration / 2);
-
-        grow.setStartOffset(duration / 2);
-        AnimationSet set = new AnimationSet(true);
-        set.setInterpolator(new LinearInterpolator());
-        set.addAnimation(shrink);
-        set.addAnimation(grow);
-        view.startAnimation(set);
+    public void updateClickListener(@NonNull QuantityButtonClickListener clickListener) {
+        this.clickListener = clickListener;
+        notifyDataSetChanged();
     }
-    */
+
+    public void updateMetricsAsImperial(boolean showMetricsAsImperial) {
+        this.imperialMetrics = showMetricsAsImperial;
+        notifyDataSetChanged();
+    }
+
+
+
 
 }

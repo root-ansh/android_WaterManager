@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
+import in.curioustools.water_reminder.utils.JVMBasedUtils;
 
 class QuantityButtonsVH extends RecyclerView.ViewHolder {
-    ImageButton ibtQty;
-    TextView tvQty;
+    private final ImageButton ibtQty;
+    private final TextView tvQty;
 
-    QuantityButtonsVH(@NonNull View itemView) {
+    public QuantityButtonsVH(@NonNull View itemView) {
         super(itemView);
         ibtQty = itemView.findViewById(R.id.ibt_qty_btn);
         tvQty = itemView.findViewById(R.id.tv_qty_text);
@@ -24,12 +25,15 @@ class QuantityButtonsVH extends RecyclerView.ViewHolder {
 
     }
 
-    void bindData(int qtyRes, final int qty, final QuantityButtonsAdapter.QuantityButtonClickListener listener, final boolean isLast) {
+    void bindData(int qtyRes, final int qty, final QuantityButtonClickListener listener, final boolean isLast, boolean imperialMetrics) {
 
         ibtQty.setImageResource(qtyRes);
 
         if (!isLast) {
-            tvQty.setText(String.format(Locale.getDefault(), "%d ml", qty));
+            String text = imperialMetrics
+                    ?  String.format(Locale.ROOT, "%d fl. oz.", JVMBasedUtils.convertToFluidOunces(qty))
+                    : String.format(Locale.ROOT, "%d ml", qty);
+            tvQty.setText(text);
         } else {
             tvQty.setText(tvQty.getContext().getString(R.string.add_new));
         }
@@ -39,10 +43,35 @@ class QuantityButtonsVH extends RecyclerView.ViewHolder {
             } else {
                 listener.onQtyButtonClick(qty);
             }
-
-//                    showButtonPressAnimation(view);
-
         });
     }
 
 }
+  /*
+    private static void showButtonPressAnimation(View view) {
+        final float shrinkTo = 0.90f;
+        final long duration = 100;
+        ScaleAnimation grow = new ScaleAnimation(
+                shrinkTo, 1,
+                shrinkTo, 1,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+
+        grow.setDuration(duration / 2);
+
+
+        ScaleAnimation shrink = new ScaleAnimation(
+                1, shrinkTo,
+                1, shrinkTo,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        shrink.setDuration(duration / 2);
+
+        grow.setStartOffset(duration / 2);
+        AnimationSet set = new AnimationSet(true);
+        set.setInterpolator(new LinearInterpolator());
+        set.addAnimation(shrink);
+        set.addAnimation(grow);
+        view.startAnimation(set);
+    }
+    */

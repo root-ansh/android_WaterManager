@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
+import in.curioustools.water_reminder.db.pref.PrefUserDetails;
 import in.curioustools.water_reminder.utils.JVMBasedUtils;
 import in.curioustools.water_reminder.utils.TimeUtilities;
 import in.curioustools.water_reminder.utils.AndroidBasedUtils;
@@ -35,7 +36,6 @@ import in.curioustools.water_reminder.db.db_water.model.TodayEntry;
 import static android.content.Context.MODE_PRIVATE;
 import static in.curioustools.water_reminder.db.pref.PrefUserDetails.PREF_NAME;
 import static in.curioustools.water_reminder.ui.custom.carousal_layout_manager.CarouselLayoutManager.HORIZONTAL;
-import static in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment.QuantityButtonsAdapter.*;
 
 
 public class DashboardFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, QuantityButtonClickListener, TodayEntriesAdapter.OnMyMenuItemClickListener {
@@ -55,9 +55,7 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
     @Nullable
     private SharedPreferences prefBasicInfo;
 
-    //----------------</global>---------------------------
-
-    //----------------<lifecycle funcs>---------------------------
+    /// -----------</global>-----<lifecycle funcs>---------------------------
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,8 +71,8 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
 
         rvButtons = fragView.findViewById(R.id.rv_buttons);
         if (rvButtons != null) {
-            adpButtons.setButtonModelList(QuantityButtonModel.getDefaultButtonList());
-            adpButtons.setClickListener(this);
+            adpButtons.updateButtonModelList(QuantityButtonModel.getDefaultButtonList());
+            adpButtons.updateClickListener(this);
 
             CarouselLayoutManager lm = new CarouselLayoutManager(HORIZONTAL, true);
             lm.setPostLayoutListener(new CarouselZoomPostLayoutListener());
@@ -129,9 +127,7 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
 
     }
 
-    //----------------</lifecycle funcs>---------------------------
-
-    //----------------<funcs from implemented interfaces>---------------------------
+    //----------------</lifecycle funcs>----<funcs from implemented interfaces>---------------------------
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences pref, String s) {
@@ -140,6 +136,8 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
         }
 
         setUiFromPreferences(pref);
+
+
     }
 
 
@@ -184,15 +182,19 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
         }
     }
 
-    //----------------</funcs from implemented interfaces>---------------------------
-
-    //----------------<other funcs>---------------------------
+    //----------------</funcs from implemented interfaces>-------<other funcs>---------------------------
 
 
     private void setUiFromPreferences(@Nullable SharedPreferences pref) {
         setProgressBar(pref);
         setProgressImage(pref);
         setTargetAndAchievedAmount(pref);
+
+        if(pref!=null){
+            boolean showMetricsAsImperial = pref.getBoolean(PrefUserDetails.KEYS.KEY_SHOW_IMPERIAL_MM, PrefUserDetails.Defaults.SHOW_IMPERIAL_MM);
+            adpEntries.updateMetricsAsImperial(showMetricsAsImperial);
+            adpButtons.updateMetricsAsImperial(showMetricsAsImperial);
+        }
     }
 
     private void setProgressImage(@Nullable SharedPreferences pref) {
