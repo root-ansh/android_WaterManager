@@ -41,7 +41,6 @@ import static in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragm
 public class DashboardFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, QuantityButtonClickListener, TodayEntriesAdapter.OnMyMenuItemClickListener {
     //----------------<global>---------------------------
 
-
     @Nullable
     View fragRootView;
     @Nullable
@@ -57,6 +56,9 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
     private SharedPreferences prefBasicInfo;
 
     //----------------</global>---------------------------
+
+    //----------------<lifecycle funcs>---------------------------
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
@@ -95,8 +97,8 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
 
         //init preferences
         prefBasicInfo = fragView.getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        AndroidBasedUtils.makeDateChanges(prefBasicInfo, repo);
         setUiFromPreferences(prefBasicInfo);
+        AndroidBasedUtils.makeDateChanges(prefBasicInfo, repo);
 
         //setRepoAndLiveData
         repo = WaterRepo.getRepoInstance(fragView.getContext().getApplicationContext());
@@ -126,6 +128,10 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
         super.onPause();
 
     }
+
+    //----------------</lifecycle funcs>---------------------------
+
+    //----------------<funcs from implemented interfaces>---------------------------
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences pref, String s) {
@@ -177,6 +183,11 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
             repo.removeOldTodayEntry(entry);
         }
     }
+
+    //----------------</funcs from implemented interfaces>---------------------------
+
+    //----------------<other funcs>---------------------------
+
 
     private void setUiFromPreferences(@Nullable SharedPreferences pref) {
         setProgressBar(pref);
@@ -278,6 +289,8 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
         progressView.setMax(target);
 
     }
+
+    //----------------</other funcs>---------------------------
 
 
 }
