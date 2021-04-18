@@ -37,8 +37,11 @@ import static android.content.Context.MODE_PRIVATE;
 import static in.curioustools.water_reminder.db.pref.PrefUserDetails.PREF_NAME;
 import static in.curioustools.water_reminder.ui.custom.carousal_layout_manager.CarouselLayoutManager.HORIZONTAL;
 
-
-public class DashboardFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, QuantityButtonClickListener, TodayEntriesAdapter.OnMyMenuItemClickListener {
+//todo : left items:
+// - support for notif flouid ounces
+// - support for today entries fluid ounces
+// - support for add measurement popup fluid ounces
+public class DashboardFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, QuantityButtonClickListener, OnTodayItemMenuClickListener {
     //----------------<global>---------------------------
 
     @Nullable

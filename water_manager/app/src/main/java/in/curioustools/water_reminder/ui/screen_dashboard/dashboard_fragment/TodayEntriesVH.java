@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import in.curioustools.water_reminder.R;
 import in.curioustools.water_reminder.db.db_water.model.TodayEntry;
+import in.curioustools.water_reminder.utils.JVMBasedUtils;
 
 class TodayEntriesVH extends RecyclerView.ViewHolder {
     TextView tvQtyTitle, tvTime;
@@ -26,7 +27,7 @@ class TodayEntriesVH extends RecyclerView.ViewHolder {
         initViews(itemView);
     }
 
-    private void initViews(View v) {
+    private void initViews(@NonNull View v) {
         tvQtyTitle = v.findViewById(R.id.tv_amount);
         tvTime = v.findViewById(R.id.tv_time);
         ivQty = v.findViewById(R.id.iv_qty_icon);
@@ -37,12 +38,14 @@ class TodayEntriesVH extends RecyclerView.ViewHolder {
 //            popupMenuDelete.show();
     }
 
-    //todo : use isLast
-    void bindData(final TodayEntry data, final boolean isLast, @Nullable final TodayEntriesAdapter.OnMyMenuItemClickListener listener) {
+    //todo : use [isLast]
+    void bindData(final TodayEntry data, final boolean isLast, @Nullable final OnTodayItemMenuClickListener listener, boolean imperialMetrics) {
+        int amount  = imperialMetrics? JVMBasedUtils.convertToFluidOunces(data.getAmountInMilliLitres()):data.getAmountInMilliLitres();
+        String units = imperialMetrics ? " fl. oz. " : " ml ";
         String a = "Drank ";
-        String b = "" + data.getAmountInMilliLitres();
-        String c = " ml of water";
-        Spanned qtyTextFormatted = Html.fromHtml(a + "<font color=#304EFF><b>" + b + "</b></font>" + c);
+        String b = "" + amount;
+        String c = "of water";
+        Spanned qtyTextFormatted = Html.fromHtml(a + "<font color=#304EFF><b>" + b + units+ "</b></font>" + c);
 
         tvQtyTitle.setText(qtyTextFormatted);
         tvTime.setText(String.format("at: %s", data.getTime()));
@@ -57,11 +60,6 @@ class TodayEntriesVH extends RecyclerView.ViewHolder {
         });
 
         ibtMenu.setOnClickListener(view -> popupMenuDelete.show());
-//              not working correctly when used wih livedata. need to ask commonsware
-//            if (isLast) {
-//                itemView.findViewById(R.id.fl_ladder_design).setVisibility(View.GONE);
-//            }
-
         ivQty.setImageResource(QuantityButtonModel.getResForQty(data.getAmountInMilliLitres()));
 
     }

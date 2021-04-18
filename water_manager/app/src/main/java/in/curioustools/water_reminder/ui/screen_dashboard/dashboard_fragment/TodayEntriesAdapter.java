@@ -16,27 +16,25 @@ import in.curioustools.water_reminder.db.db_water.model.TodayEntry;
 
 public class TodayEntriesAdapter extends RecyclerView.Adapter<TodayEntriesVH> {
     @NonNull
-    private List<TodayEntry> entryList;
-    @Nullable
-    private OnMyMenuItemClickListener listener;
+    private List<TodayEntry> entryList = new ArrayList<>();
 
-    TodayEntriesAdapter() {
-        this.entryList = new ArrayList<>();
-    }
+    @Nullable
+    private OnTodayItemMenuClickListener listener = null;
+
+    private boolean imperialMetrics = false;
+
 
     @NonNull
     @Override
     public TodayEntriesVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_recycler_today_entries, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_today_entries, parent, false);
         return new TodayEntriesVH(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TodayEntriesVH holder, int position) {
-
         boolean isLast = (position == (entryList.size() - 1));
-        holder.bindData(entryList.get(position), isLast, listener);
+        holder.bindData(entryList.get(position), isLast, listener, imperialMetrics);
     }
 
     @Override
@@ -44,34 +42,22 @@ public class TodayEntriesAdapter extends RecyclerView.Adapter<TodayEntriesVH> {
         return entryList.size();
     }
 
-//    @Nullable
-//    public OnMyMenuItemClickListener getListener() {
-//        return listener;
-//    }
-//
-//    @NonNull
-//    public List<TodayEntry> getEntryList() {
-//        return entryList;
-//    }
-
-    void setEntryList(@Nullable List<TodayEntry> entryList) {
+    public void setEntryList(@Nullable List<TodayEntry> entryList) {
         entryList = entryList == null ? new ArrayList<>() : entryList;
         this.entryList = entryList;
         notifyDataSetChanged();
     }
 
-    void setListener(@Nullable OnMyMenuItemClickListener listener) {
+    public void setListener(@NonNull OnTodayItemMenuClickListener listener) {
         this.listener = listener;
         notifyDataSetChanged();
     }
 
     public void updateMetricsAsImperial(boolean showMetricsAsImperial) {
+        this.imperialMetrics = showMetricsAsImperial;
+        notifyDataSetChanged();
     }
 
     //----------------------------------------------------------------------------------------------
-
-    interface OnMyMenuItemClickListener {
-        void onDeleteButtonClick(TodayEntry entry);
-    }
 
 }
