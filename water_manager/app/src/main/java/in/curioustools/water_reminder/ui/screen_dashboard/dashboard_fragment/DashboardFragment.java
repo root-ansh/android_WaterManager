@@ -38,7 +38,6 @@ import static in.curioustools.water_reminder.db.pref.PrefUserDetails.PREF_NAME;
 import static in.curioustools.water_reminder.ui.custom.carousal_layout_manager.CarouselLayoutManager.HORIZONTAL;
 
 //todo : left items:
-// - support for notif flouid ounces
 // - support for fl oz in intro fragment
 // - color change
 public class DashboardFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, QuantityButtonClickListener, OnTodayItemMenuClickListener {
