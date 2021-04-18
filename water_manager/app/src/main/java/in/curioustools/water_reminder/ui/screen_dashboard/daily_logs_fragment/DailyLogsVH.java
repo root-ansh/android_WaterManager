@@ -1,7 +1,9 @@
 package in.curioustools.water_reminder.ui.screen_dashboard.daily_logs_fragment;
 
 import android.content.res.ColorStateList;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import in.curioustools.water_reminder.R;
 import in.curioustools.water_reminder.db.db_water.model.DailyLog;
+import in.curioustools.water_reminder.utils.UtilMethods;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.O;
@@ -25,10 +28,13 @@ class DailyLogsVH extends RecyclerView.ViewHolder {
     ImageButton ibtMenu;
     PopupMenu popupMenuDelete;
 
-    DailyLogsVH(@NonNull View itemView) {
+    private DailyLogsVH(@NonNull View itemView) {
         super(itemView);
         initViews(itemView);
-        bindData(null, null);
+    }
+
+    public DailyLogsVH(ViewGroup parent){
+        this(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_recycler_daily_logs, parent, false));
     }
 
     private void initViews(View v) {
@@ -46,7 +52,11 @@ class DailyLogsVH extends RecyclerView.ViewHolder {
 
     }
 
-    void bindData(@Nullable final DailyLog data, @Nullable final DailyLogsAdapter.DlRvItemsMenuClickListener listener) {
+    void bindData(
+            @Nullable  DailyLog data,
+            @Nullable  DailyLogsAdapter.DlRvItemsMenuClickListener listener,
+            boolean showAsImperial
+    ) {
 
         if (data == null) {
             tvDate.setText("");
@@ -64,7 +74,13 @@ class DailyLogsVH extends RecyclerView.ViewHolder {
 
             tvDate.setText(date);
 
-            String stat = "" + achieved + "/" + target + " ml";
+            final String stat ;
+            if(showAsImperial){
+                stat = UtilMethods.convertToFluidOunces(achieved) + "/" +
+                        UtilMethods.convertToFluidOunces(target) + " fl. oz.";
+            }else {
+               stat =  achieved + "/" + target + " ml";
+            }
             tvAchievedAndTarget.setText(stat);
 
             if (SDK_INT >= O) {
@@ -93,11 +109,6 @@ class DailyLogsVH extends RecyclerView.ViewHolder {
             });
 
             ibtMenu.setOnClickListener(view -> popupMenuDelete.show());
-//              not working correctly when used wih livedata. need to ask commonsware
-//            if (isLast) {
-//                itemView.findViewById(R.id.fl_ladder_design).setVisibility(View.GONE);
-//            }
-
         }
     }
 

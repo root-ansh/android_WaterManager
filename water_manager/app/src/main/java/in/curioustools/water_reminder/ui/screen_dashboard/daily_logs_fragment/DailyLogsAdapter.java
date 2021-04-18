@@ -21,6 +21,8 @@ public class DailyLogsAdapter extends RecyclerView.Adapter<DailyLogsVH> {
     @Nullable
     private DlRvItemsMenuClickListener listener;
 
+    private boolean imperialMetrics = false;
+
     DailyLogsAdapter() {
         this.logList = new ArrayList<>();
     }
@@ -28,15 +30,12 @@ public class DailyLogsAdapter extends RecyclerView.Adapter<DailyLogsVH> {
     @NonNull
     @Override
     public DailyLogsVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_recycler_daily_logs, parent, false);
-        return new DailyLogsVH(v);
+        return new DailyLogsVH(parent);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DailyLogsVH holder, int position) {
-
-        holder.bindData(logList.get(position), listener);
+        holder.bindData(logList.get(position), listener,imperialMetrics);
     }
 
     @Override
@@ -54,14 +53,19 @@ public class DailyLogsAdapter extends RecyclerView.Adapter<DailyLogsVH> {
 //        return logList;
 //    }
 
-    void setLogList(@Nullable List<DailyLog> logList) {
+    public void setLogList(@Nullable List<DailyLog> logList) {
         logList = logList == null ? new ArrayList<>() : logList;
         this.logList = logList;
         notifyDataSetChanged();
     }
 
-    void setItemsMenuListener(@Nullable DlRvItemsMenuClickListener listener) {
+    public void setItemsMenuListener(@Nullable DlRvItemsMenuClickListener listener) {
         this.listener = listener;
+        notifyDataSetChanged();
+    }
+
+    public void updateMetricsAsImperial(boolean showMetricsAsImperial) {
+        this.imperialMetrics = showMetricsAsImperial;
         notifyDataSetChanged();
     }
 
