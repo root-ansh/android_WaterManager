@@ -137,12 +137,24 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
         if (repo != null && prefBasicInfo != null) {
             AndroidBasedUtils.makeDateChanges(prefBasicInfo, repo);
         }
-
         setUiFromPreferences(pref);
 
 
     }
 
+    @Override
+    public void onAddNewQtyButtonClick() {
+        if (fragRootView == null || rvButtons == null) return;
+
+        QuantityDialog dialog;
+        dialog = new QuantityDialog(fragRootView.getContext());
+        dialog.setOnPositiveClickListener(
+                data -> {
+                    adpButtons.addItemInCentre(data);
+                    rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
+                });
+        dialog.show();
+    }
 
     @Override
     public void onQtyButtonClick(int qty) {
@@ -165,24 +177,15 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
     }
 
     @Override
-    public void onAddNewQtyButtonClick() {
-        if (fragRootView == null || rvButtons == null) return;
-
-        QuantityDialog dialog;
-        dialog = new QuantityDialog(fragRootView.getContext());
-        dialog.setOnPositiveClickListener(
-                data -> {
-                    adpButtons.addItemInCentre(data);
-                    rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
-                });
-        dialog.show();
-    }
-
-    @Override
     public void onDeleteButtonClick(TodayEntry entry) {
-        if (repo != null) {
-            repo.removeOldTodayEntry(entry);
-        }
+        if (repo == null || prefBasicInfo == null ) return;
+        repo.removeOldTodayEntry(entry);
+        int origQty = prefBasicInfo.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
+        int qty = entry.getAmountInMilliLitres();
+
+        prefBasicInfo.edit().putInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, origQty - qty).apply();
+
+
     }
 
     //----------------</funcs from implemented interfaces>-------<other funcs>---------------------------

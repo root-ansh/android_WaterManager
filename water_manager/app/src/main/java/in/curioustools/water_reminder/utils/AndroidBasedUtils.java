@@ -70,20 +70,16 @@ public class AndroidBasedUtils {
         catch (Exception e){
             oldValue = 0;
         }
-        if(oldValue>newValue){
-            tv.setText(String.valueOf(newValue));
-        }
-        else{
-            ValueAnimator animator = ValueAnimator.ofInt(oldValue, newValue);
-            animator.setDuration(1500);
-            animator.addUpdateListener(
-                    valueAnimator -> {
-                        String s = String.format("%s", valueAnimator.getAnimatedValue().toString());
-                        tv.setText(s);
-                    }
-            );
-            animator.start();
-        }
+        int duration = oldValue > newValue ? 500 : 1500;
+        ValueAnimator animator = ValueAnimator.ofInt(oldValue, newValue);
+        animator.setDuration(duration);
+        animator.addUpdateListener(
+                valueAnimator -> {
+                    String s = String.format("%s", valueAnimator.getAnimatedValue().toString());
+                    tv.setText(s);
+                }
+        );
+        animator.start();
 
     }
 
