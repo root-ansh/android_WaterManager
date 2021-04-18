@@ -1,6 +1,6 @@
 package in.curioustools.water_reminder.ui.screen_intro;
 
-import android.annotation.SuppressLint;
+
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -13,7 +13,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import in.curioustools.water_reminder.R;
 
-@SuppressLint({"SetTextI18n", "InflateParams", "SameParameterValue"})
 public class IntroInfoActivity extends AppCompatActivity {
 
 

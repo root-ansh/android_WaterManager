@@ -1,7 +1,6 @@
 package in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment;
 
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;

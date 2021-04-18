@@ -1,6 +1,6 @@
 package in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment;
 
-import android.annotation.SuppressLint;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,7 +43,6 @@ class QuantityDialog {
                 });
     }
 
-    @SuppressLint("InflateParams")
     private View createView(Context ctx) {
         View v = LayoutInflater.from(ctx)
                 .inflate(R.layout.dialog_new_quantitiy_btn, null);

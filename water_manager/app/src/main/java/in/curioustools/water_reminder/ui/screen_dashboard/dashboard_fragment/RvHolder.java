@@ -1,6 +1,6 @@
 package in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment;
 
-import android.annotation.SuppressLint;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,7 +24,6 @@ class RvHolder extends RecyclerView.ViewHolder {
 
     }
 
-    @SuppressLint("SetTextI18n")
     void bind(int qtyRes, final int qty, final QuantityButtonsAdapter.QuantityButtonClickListener listener, final boolean isLast) {
 
         ibtQty.setImageResource(qtyRes);

@@ -1,7 +1,7 @@
 package in.curioustools.water_reminder.ui.screen_dashboard.settings_fragment;
 
 
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -34,7 +34,6 @@ import in.curioustools.water_reminder.services.ServicesHandler;
 import static android.content.Context.*;
 import static in.curioustools.water_reminder.db.pref.PrefUserDetails.*;
 
-@SuppressLint("SetTextI18n")
 public class SettingsFragment extends Fragment {
     private static final String TAG="SettingsFragment";
 

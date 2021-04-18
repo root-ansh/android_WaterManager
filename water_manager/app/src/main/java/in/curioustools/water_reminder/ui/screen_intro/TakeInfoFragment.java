@@ -1,7 +1,7 @@
 package in.curioustools.water_reminder.ui.screen_intro;
 
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
+
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
