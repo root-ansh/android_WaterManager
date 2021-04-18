@@ -13,6 +13,7 @@ public class PrefUserDetails {
         String KEY_WEIGHT = "basicinfo_weight";
         String KEY_ACTIVITY = "basicinfo_activity";
         String KEY_SHOW_NOTIFS = "show_notif";
+        String KEY_SHOW_IMPERIAL_MM = "show_imperial_metrics";
         String KEY_SHOWN_INFO_ACTIVITY = "launched_info_activity_once";
 
         String KEY_DAILY_TARGET = "basicinfo_daily_intake";
@@ -34,7 +35,7 @@ public class PrefUserDetails {
         boolean SHOW_NOTIF = false;
         boolean HAS_SHOWN_INTRO_INFO_ACTIVITY = false;
         boolean SHOW_LOGS =false;
-
+        Boolean SHOW_IMPERIAL_MM = false;
     }
 
     public enum UserActivity {LOTS, SOME, AFEW, NONE}

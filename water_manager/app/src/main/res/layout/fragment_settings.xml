@@ -11,6 +11,7 @@
     android:paddingEnd="16dp"
 
     tools:ignore="HardcodedText"
+    android:animateLayoutChanges="true"
 
     >
 
@@ -433,6 +434,90 @@
             app:cardMaxElevation="4dp">
 
             <LinearLayout
+                android:id="@+id/stf_ll_imperial_metrics"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animationCache="true"
+
+                android:orientation="horizontal"
+
+
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+
+                    android:background="@drawable/bg_circle_white"
+                    android:backgroundTint="#E8FBFF"
+
+                    android:padding="12dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_translation"
+
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:animationCache="true"
+
+
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Measurements in  Fluid Ounces (Fl. Oz.)"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/stf_tv_imperial_metrics"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/msg_imperial_metrics"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/stf_sw_imperial_metrics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="false"
+
+                    android:focusable="false"
+                    android:padding="8dp" />
+
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:animationCache="true"
+            app:cardElevation="4dp"
+
+            app:cardMaxElevation="4dp">
+
+            <LinearLayout
                 android:id="@+id/stf_layout_daily_notif"
 
                 android:layout_width="match_parent"
@@ -490,7 +575,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/stf_sw_daily_notif"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TimePicker;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -137,10 +137,22 @@ public class Dialogs {
         void onIntakeEdited(int newIntake);
     }
 
-    public static void showEditIntakeDialog(@NonNull View root, @NonNull final OnIntakeEditedListener listener, final int initialVal) {
+    public static void showEditIntakeDialog(
+            @NonNull View root,
+            @NonNull final OnIntakeEditedListener listener,
+            final int initialVal,
+            boolean showUnitsAsImperial
+    ) {
         final View v = createView(root.getContext(), ViewType.Intake);
         final EditText et = v.findViewById(R.id.dif_et_intake);
-        String initialValString = String.format(Locale.ROOT, "%d", initialVal);
+        final TextView tvUnit = v.findViewById(R.id.tv_unit);
+        tvUnit.setText(showUnitsAsImperial ? "fl. oz" : "ml");
+
+        String initialValString = String.format(
+                Locale.ROOT,
+                "%d",
+                showUnitsAsImperial ? UtilMethods.convertToFluidOunces(initialVal) : initialVal
+        );
         et.setText(initialValString);
         new AlertDialog.Builder(root.getContext())
                 .setCancelable(false)
@@ -154,7 +166,8 @@ public class Dialogs {
                     } catch (Exception e) {
                         val = PrefUserDetails.Defaults.DAILY_TARGET;
                     }
-                    listener.onIntakeEdited(val);
+
+                    listener.onIntakeEdited(showUnitsAsImperial? UtilMethods.convertToMillis(val):val);
                 })
                 .show();
     }

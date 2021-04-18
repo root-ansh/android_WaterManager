@@ -4,5 +4,6 @@
     <string name="finish">FINISH</string>
     <string name="notif_reminder_desc">Show notification reminder to drink water every few hours is %s</string>
     <string name="add_new">Add new</string>
+    <string name="msg_imperial_metrics">1 Fl. Oz. = 29.5 ml (Approx.) . Currently the measurement is in : %s</string>
 
 </resources>
