@@ -24,7 +24,7 @@ class QuantityButtonsVH extends RecyclerView.ViewHolder {
 
     }
 
-    void bind(int qtyRes, final int qty, final QuantityButtonsAdapter.QuantityButtonClickListener listener, final boolean isLast) {
+    void bindData(int qtyRes, final int qty, final QuantityButtonsAdapter.QuantityButtonClickListener listener, final boolean isLast) {
 
         ibtQty.setImageResource(qtyRes);
 
@@ -35,9 +35,9 @@ class QuantityButtonsVH extends RecyclerView.ViewHolder {
         }
         ibtQty.setOnClickListener(view -> {
             if (isLast) {
-                listener.onAddNewItemClick();
+                listener.onAddNewQtyButtonClick();
             } else {
-                listener.onItemClick(qty);
+                listener.onQtyButtonClick(qty);
             }
 
 //                    showButtonPressAnimation(view);

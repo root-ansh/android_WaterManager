@@ -151,7 +151,7 @@ public class Dialogs {
         String initialValString = String.format(
                 Locale.ROOT,
                 "%d",
-                showUnitsAsImperial ? UtilMethods.convertToFluidOunces(initialVal) : initialVal
+                showUnitsAsImperial ? JVMBasedUtils.convertToFluidOunces(initialVal) : initialVal
         );
         et.setText(initialValString);
         new AlertDialog.Builder(root.getContext())
@@ -167,7 +167,7 @@ public class Dialogs {
                         val = PrefUserDetails.Defaults.DAILY_TARGET;
                     }
 
-                    listener.onIntakeEdited(showUnitsAsImperial? UtilMethods.convertToMillis(val):val);
+                    listener.onIntakeEdited(showUnitsAsImperial? JVMBasedUtils.convertToMillis(val):val);
                 })
                 .show();
     }

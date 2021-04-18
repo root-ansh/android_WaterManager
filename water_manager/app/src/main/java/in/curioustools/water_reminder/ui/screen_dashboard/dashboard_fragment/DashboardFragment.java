@@ -1,9 +1,7 @@
 package in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment;
 
-import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +22,9 @@ import java.util.List;
 import java.util.Locale;
 
 import in.curioustools.water_reminder.R;
+import in.curioustools.water_reminder.utils.JVMBasedUtils;
 import in.curioustools.water_reminder.utils.TimeUtilities;
-import in.curioustools.water_reminder.utils.UtilMethods;
+import in.curioustools.water_reminder.utils.AndroidBasedUtils;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.KEYS;
 import in.curioustools.water_reminder.ui.custom.carousal_layout_manager.CarouselLayoutManager;
@@ -39,31 +38,27 @@ import static in.curioustools.water_reminder.ui.custom.carousal_layout_manager.C
 import static in.curioustools.water_reminder.ui.screen_dashboard.dashboard_fragment.QuantityButtonsAdapter.*;
 
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener, QuantityButtonClickListener, TodayEntriesAdapter.OnMyMenuItemClickListener {
     //----------------<global>---------------------------
 
-    private static final String TAG = "DashboardFragment";
 
+    @Nullable
+    View fragRootView;
+    @Nullable
+    RecyclerView rvButtons;
 
-    private TextView tvAchieved, tvTarget;
-    private RecyclerView rvButtons;
-    private QuantityButtonsAdapter adpButtons;
-    private TodayEntriesAdapter adpEntries;
+    private final QuantityButtonsAdapter adpButtons = new QuantityButtonsAdapter();
+    private final TodayEntriesAdapter adpEntries = new TodayEntriesAdapter();
 
     @Nullable
     private WaterRepo repo;
 
-    private CircularProgressView progressView;
-    private ImageView ivProgressViewImage;
-
     @Nullable
     private SharedPreferences prefBasicInfo;
-    @Nullable
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+
     //----------------</global>---------------------------
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 
@@ -71,64 +66,132 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View fragView, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(fragView, savedInstanceState);
-        initUi(fragView);
-        setInitialData();
-        initPrefAndListener(fragView);
-        if (repo != null && prefBasicInfo != null) {
-            UtilMethods.makeDateChanges(prefBasicInfo, repo);
-        }
-        setUiFromPreferences(prefBasicInfo);
-        setRepoAndLiveData(fragView);
-        setListeners(fragView);
-    }
+        fragRootView = fragView;
+        //initUI
 
-    private void initUi(View fragView) {
         rvButtons = fragView.findViewById(R.id.rv_buttons);
-        CarouselLayoutManager lm = new CarouselLayoutManager(HORIZONTAL, true);
-        lm.setPostLayoutListener(new CarouselZoomPostLayoutListener());
-        rvButtons.setLayoutManager(lm);
-        rvButtons.setHasFixedSize(true);
-        adpButtons = new QuantityButtonsAdapter();
-        rvButtons.setAdapter(adpButtons);
+        if (rvButtons != null) {
+            adpButtons.setButtonModelList(QuantityButtonModel.getDefaultButtonList());
+            adpButtons.setClickListener(this);
+
+            CarouselLayoutManager lm = new CarouselLayoutManager(HORIZONTAL, true);
+            lm.setPostLayoutListener(new CarouselZoomPostLayoutListener());
+            rvButtons.setLayoutManager(lm);
+            rvButtons.setHasFixedSize(true);
+            rvButtons.setAdapter(adpButtons);
+            rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
+        }
+
+
         RecyclerView rvTodayEntries = fragView.findViewById(R.id.rv_today_entries);
-        rvTodayEntries.setLayoutManager(new LinearLayoutManager(fragView.getContext()));
-        rvTodayEntries.setHasFixedSize(true);
-        adpEntries = new TodayEntriesAdapter();
-        rvTodayEntries.setAdapter(adpEntries);
-        ivProgressViewImage = fragView.findViewById(R.id.iv_progress_centre);
-        progressView = fragView.findViewById(R.id.progress_daily_intake);
-        tvAchieved = fragView.findViewById(R.id.fdv_tv_achieved);
-        tvTarget = fragView.findViewById(R.id.fdv_tv_target);
+        if (rvTodayEntries != null) {
+            adpEntries.setEntryList(new ArrayList<>());
+            adpEntries.setListener(this);
+
+            rvTodayEntries.setLayoutManager(new LinearLayoutManager(fragView.getContext()));
+            rvTodayEntries.setHasFixedSize(true);
+            rvTodayEntries.setAdapter(adpEntries);
+        }
+
+        //init preferences
+        prefBasicInfo = fragView.getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        AndroidBasedUtils.makeDateChanges(prefBasicInfo, repo);
+        setUiFromPreferences(prefBasicInfo);
+
+        //setRepoAndLiveData
+        repo = WaterRepo.getRepoInstance(fragView.getContext().getApplicationContext());
+        LiveData<List<TodayEntry>> liveEntries = repo.getAllTodayEntriesObservable();
+        if (liveEntries != null) {
+            liveEntries.observe(this, adpEntries::setEntryList);
+        }
     }
 
-    private void setInitialData() {
-        progressView.setProgress(0);
-        progressView.setMax(0);
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (prefBasicInfo == null || repo == null) return;
 
-        ivProgressViewImage.setImageResource(getProgressImage(null));
+        prefBasicInfo.registerOnSharedPreferenceChangeListener(this);
+        setUiFromPreferences(prefBasicInfo);
 
-        adpButtons.setButtonModelList(QuantityButtonModel.getDefaultButtonList());
-        rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
-        adpEntries.setEntryList(new ArrayList<>());
-        tvTarget.setText(tvTarget.getContext().getString(R.string.zero_ml));
-        tvAchieved.setText("0");
+        AndroidBasedUtils.makeDateChanges(prefBasicInfo, repo);
+
     }
 
-    private void updateTextAnimated(int initialVal, int finalVal, final TextView tv) {
-        ValueAnimator animator = ValueAnimator.ofInt(initialVal, finalVal);
-        animator.setDuration(1500);
-        animator.addUpdateListener(
-                valueAnimator -> {
-                    String s = String.format("%s", valueAnimator.getAnimatedValue().toString());
-                    tv.setText(s);
-                }
-        );
-        animator.start();
+    @Override
+    public void onPause() {
+        if (prefBasicInfo != null) {
+            prefBasicInfo.unregisterOnSharedPreferenceChangeListener(this);
+        }
+        super.onPause();
+
     }
 
-    private int getProgressImage(@Nullable SharedPreferences pref) {
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences pref, String s) {
+        if (repo != null && prefBasicInfo != null) {
+            AndroidBasedUtils.makeDateChanges(prefBasicInfo, repo);
+        }
+
+        setUiFromPreferences(pref);
+    }
+
+
+    @Override
+    public void onQtyButtonClick(int qty) {
+        if (repo == null || prefBasicInfo == null) return;
+
+        String time = TimeUtilities.getCurrentTime();
+
+        int origQty = prefBasicInfo.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
+
+        TodayEntry entry = new TodayEntry();
+        entry.setTime(time);
+        entry.setAmountInMilliLitres(qty);
+
+        //---
+        repo.addNewTodayEntry(entry);
+        prefBasicInfo.edit().putInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, origQty + qty).apply();
+
+        AndroidBasedUtils.makeDateChanges(prefBasicInfo, repo);
+
+    }
+
+    @Override
+    public void onAddNewQtyButtonClick() {
+        if (fragRootView == null || rvButtons == null) return;
+
+        QuantityDialog dialog;
+        dialog = new QuantityDialog(fragRootView.getContext());
+        dialog.setOnPositiveClickListener(
+                data -> {
+                    adpButtons.addItemInCentre(data);
+                    rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
+                });
+        dialog.show();
+    }
+
+    @Override
+    public void onDeleteButtonClick(TodayEntry entry) {
+        if (repo != null) {
+            repo.removeOldTodayEntry(entry);
+        }
+    }
+
+    private void setUiFromPreferences(@Nullable SharedPreferences pref) {
+        setProgressBar(pref);
+        setProgressImage(pref);
+        setTargetAndAchievedAmount(pref);
+    }
+
+    private void setProgressImage(@Nullable SharedPreferences pref) {
+        // we can return on null root view but not null  preference data, we gota use fallback
+        if (fragRootView == null) return;
+
+        final int progressImageRes;
+
         if (pref == null) {
-            return R.drawable.ic_progress_centre_happy;
+            progressImageRes = R.drawable.ic_progress_centre_happy;
         } else {
             String sleepTime = pref.getString(KEYS.KEY_SLEEP_TIME, Defaults.SLEEP_TIME);
             String wakeTime = pref.getString(KEYS.KEY_WAKEUP_TIME, Defaults.WAKEUP_TIME);
@@ -136,161 +199,85 @@ public class DashboardFragment extends Fragment {
 
             boolean isBetweenSleep = TimeUtilities.isTimeInBetween2Times(sleepTime, wakeTime, currentTime);
             if (isBetweenSleep) {
-                return R.drawable.ic_progress_centre_sleeping;
+                progressImageRes = R.drawable.ic_progress_centre_sleeping;
             } else {
                 int achieved = pref.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
                 int target = pref.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
                 if (achieved > target) {
-                    return R.drawable.ic_progress_centre_target_crossed;
+                    progressImageRes = R.drawable.ic_progress_centre_target_crossed;
                 } else if (achieved >= target / 4) {
-                    return R.drawable.ic_progress_centre_happy;
+                    progressImageRes = R.drawable.ic_progress_centre_happy;
                 } else {
-                    return R.drawable.ic_progress_centre_thirsty;
+                    progressImageRes = R.drawable.ic_progress_centre_thirsty;
                 }
             }
         }
+
+        ImageView ivProgressViewImage = fragRootView.findViewById(R.id.iv_progress_centre);
+        ivProgressViewImage.setImageResource(progressImageRes);
+
     }
 
-    private void initPrefAndListener(View root) {
-        Log.e(TAG, "initPrefAndListener: called");
-        prefBasicInfo = root.getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        Log.e(TAG, "initPrefAndListener: setted preference:" + prefBasicInfo);
-        prefListener = (pref, s) -> {
-            Log.e(TAG, "onSharedPreferenceChanged: preference updated calling setUiFromPreferences(pref) for pref= " + pref);
-            if (repo != null && prefBasicInfo!=null) {
-                UtilMethods.makeDateChanges(prefBasicInfo, repo);
-            }
+    private void setTargetAndAchievedAmount(@Nullable SharedPreferences pref) {
+        if (fragRootView == null) return;
 
-            setUiFromPreferences(pref);
+        final int target;
+        final int achieved;
+        final boolean showAsImperial;
 
-        };
-    }
-
-    private void setUiFromPreferences(@Nullable SharedPreferences pref) {
-        Log.e(TAG, "setUiFromPreferences: called");
-        if (pref != null) {
-            Log.e(TAG, "setUiFromPreferences: calling pref!=null");
-            Log.e(TAG, "setUiFromPreferences: calling for progress,max");
-
-            int progress = pref.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
-            int max = pref.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
-
-            Log.e(TAG, String.format("setUiFromPreferences: progress,max=%d,%d", progress, max));
-
-            progressView.setProgress(progress, true);
-            progressView.setMax(max);
-
-
-            tvTarget.setText(String.format(Locale.ROOT, "%d ml", max));
-            int initial = Integer.parseInt(tvAchieved.getText().toString());
-            updateTextAnimated(initial, progress, tvAchieved);
+        if (pref == null) {
+            target = Defaults.DAILY_TARGET;
+            achieved = Defaults.TODAY_INTAKE_ACHIEVED;
+            showAsImperial = Defaults.SHOW_IMPERIAL_MM;
+        } else {
+            target = pref.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
+            achieved = pref.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
+            showAsImperial = pref.getBoolean(KEYS.KEY_SHOW_IMPERIAL_MM, Defaults.SHOW_IMPERIAL_MM);
         }
-        ivProgressViewImage.setImageResource(getProgressImage(pref));
+
+        String finalTargetString = showAsImperial
+                ? String.format(Locale.ROOT, "%s Fl. Oz.", JVMBasedUtils.convertToFluidOunces(target))
+                : String.format(Locale.ROOT, "%s ml", target);
+
+        int finalAchievedValue = showAsImperial ? JVMBasedUtils.convertToFluidOunces(achieved) : achieved;
+
+        TextView tvAchieved = fragRootView.findViewById(R.id.fdv_tv_achieved);
+        TextView tvTarget = fragRootView.findViewById(R.id.fdv_tv_target);
+
+        tvTarget.setText(finalTargetString);
+        AndroidBasedUtils.setTextAnimated(finalAchievedValue, tvAchieved);//tvAchieved.setText(String.valueOf(achieved));
+
     }
 
+    private void setProgressBar(@Nullable SharedPreferences pref) {
+        if (fragRootView == null) return;
 
-    private void setRepoAndLiveData(View fragView) {
-        Log.e(TAG, "setRepoAndLiveData: called");
-        repo = WaterRepo.getRepoInstance(fragView.getContext().getApplicationContext());
-        LiveData<List<TodayEntry>> liveEntries = repo.getAllTodayEntriesObservable();
-        Log.e(TAG, String.format("setRepoAndLiveData: setted repo and livedata as: %s, %s", repo, liveEntries));
-        if (liveEntries != null) {
-            Log.e(TAG, "setRepoAndLiveData: liventries aren't null");
-            liveEntries.observe(this, todayEntries -> {
-                Log.e(TAG, "onChanged: recieved list in livedata observer :" + todayEntries);
-                if (adpEntries != null) {
-                    Log.e(TAG, "onChanged: adpentries is not null");
-                    adpEntries.setEntryList(todayEntries);//doesn't matter even if list is null
-                }
-            });
+        int target;
+        int achieved;
+        final boolean showAsImperial;
+
+        if (pref == null) {
+            target = Defaults.DAILY_TARGET;
+            achieved = Defaults.TODAY_INTAKE_ACHIEVED;
+            showAsImperial = Defaults.SHOW_IMPERIAL_MM;
+        } else {
+            target = pref.getInt(KEYS.KEY_DAILY_TARGET, Defaults.DAILY_TARGET);
+            achieved = pref.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
+            showAsImperial = pref.getBoolean(KEYS.KEY_SHOW_IMPERIAL_MM, Defaults.SHOW_IMPERIAL_MM);
         }
-    }
 
-    private void setListeners(final View fragView) {
-        adpEntries.setListener(entry -> {
-            Log.e(TAG, "adpEntries:onDeleteButtonClick: button is clicked! entry recieved=" + entry);
-
-            if (repo != null) {
-                Log.e(TAG, "onDeleteButtonClick: calling:repo.removeOldTodayEntry(entry)");
-
-                repo.removeOldTodayEntry(entry);
-            }
-        });
-
-        adpButtons.setClickListener(new QuantityButtonClickListener() {
-            @Override
-            public void onItemClick(int qty) {
-                Log.e(TAG, "adpButtons:onItemClick: button is clicked! qty received=" + qty);
-                if (repo != null) {
-                    Log.e(TAG, "onItemClick: repo is not null");
-                    String time = TimeUtilities.getCurrentTime();
-                    TodayEntry entry = new TodayEntry();
-                    entry.setTime(time);
-                    entry.setAmount(qty);
-                    Log.e(TAG, "onItemClick: created new entry:" + entry);
-                    Log.e(TAG, "onItemClick: calling repo.addNewTodayEntry(entry)");
-                    repo.addNewTodayEntry(entry);
-                    //rvTodayEntries.scrollToPosition(0);
-                    Log.e(TAG, "onItemClick: calling addQtyToPref(qty)");
-                    addQtyToPref(qty);
-
-                }
-
-            }
-
-            @Override
-            public void onAddNewItemClick() {
-                Log.e(TAG, "onAddNewItemClick: called");
-                QuantityDialog dialog;
-                dialog = new QuantityDialog(fragView.getContext());
-                dialog.setOnPositiveClickListener(
-                        data -> {
-                            adpButtons.addItemInCentre(data);
-                            //  15-08-2019 add item in shared pref
-                            //  update: we are not doing that. now we have in memory 5 buttons
-                            //  and 1 add new button. user can create temporary buttons but that
-                            //  would be removed as soon as the app is killed.
-                            rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
-                        });
-                dialog.show();
-            }
-        });
-    }
-
-    private void addQtyToPref(int newInsertionQty) {
-        if (prefBasicInfo != null) {
-            int origQty = prefBasicInfo.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
-            prefBasicInfo.edit().putInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, origQty + newInsertionQty).apply();
-
-            if (repo != null) {
-                UtilMethods.makeDateChanges(prefBasicInfo, repo);
-            }
+        if (showAsImperial) {
+            achieved = JVMBasedUtils.convertToFluidOunces(achieved);
+            target = JVMBasedUtils.convertToFluidOunces(target);
         }
-    }
 
+        CircularProgressView progressView = fragRootView.findViewById(R.id.progress_daily_intake);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e(TAG, "onResume: called");
-        if (prefBasicInfo != null && prefListener != null) {
-            prefBasicInfo.registerOnSharedPreferenceChangeListener(prefListener);
-            setUiFromPreferences(prefBasicInfo);
-            if (repo != null) {
-                UtilMethods.makeDateChanges(prefBasicInfo, repo);
-
-            }
-        }
-    }
-
-    @Override
-    public void onPause() {
-        if (prefBasicInfo != null && prefListener != null) {
-            prefBasicInfo.unregisterOnSharedPreferenceChangeListener(prefListener);
-            Log.e(TAG, "onPause: listener unregisterd");
-        }
-        super.onPause();
+        //setInitialData();
+        progressView.setProgress(achieved);
+        progressView.setMax(target);
 
     }
+
 
 }

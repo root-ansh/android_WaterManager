@@ -22,21 +22,21 @@ public class DailyLog {
     private String date;
 
     @ColumnInfo(name = WaterDbUtils.TDL.Names.COL_TARGET)
-    private int target;
+    private int targetInMilliLitres;
 
     @ColumnInfo(name = WaterDbUtils.TDL.Names.COL_ACHIEVED)
-    private int achieved;
+    private int achievedInMilliLitres;
 
     public DailyLog() {
         this.date = TimeUtilities.getCurrentDate();
     }
 
     @Ignore
-    public DailyLog(long id, @NonNull String date, int target, int achieved) {
+    public DailyLog(long id, @NonNull String date, int target, int achievedInMilliLitres) {
         this.id = id;
         this.date = date;
-        this.target = target;
-        this.achieved = achieved;
+        this.targetInMilliLitres = target;
+        this.achievedInMilliLitres = achievedInMilliLitres;
     }
 
     public long getId() {
@@ -48,12 +48,12 @@ public class DailyLog {
         return date;
     }
 
-    public int getTarget() {
-        return target;
+    public int getTargetInMilliLitres() {
+        return targetInMilliLitres;
     }
 
-    public int getAchieved() {
-        return achieved;
+    public int getAchievedInMilliLitres() {
+        return achievedInMilliLitres;
     }
 
     public void setId(long id) {
@@ -64,18 +64,18 @@ public class DailyLog {
         this.date = date;
     }
 
-    public void setTarget(int target) {
-        this.target = target;
+    public void setTargetInMilliLitres(int targetInMilliLitres) {
+        this.targetInMilliLitres = targetInMilliLitres;
     }
 
-    public void setAchieved(int achieved) {
-        this.achieved = achieved;
+    public void setAchievedInMilliLitres(int achievedInMilliLitres) {
+        this.achievedInMilliLitres = achievedInMilliLitres;
     }
 
     @NonNull
     @Override
     public String toString() {
         return String.format(Locale.ROOT,
-                "DailyLog{id=%d, date='%s', target=%d, achieved=%d}", id, date, target, achieved);
+                "DailyLog{id=%d, date='%s', target=%d, achieved=%d}", id, date, targetInMilliLitres, achievedInMilliLitres);
     }
 }

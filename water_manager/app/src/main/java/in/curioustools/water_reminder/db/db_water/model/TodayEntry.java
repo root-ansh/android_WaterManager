@@ -22,13 +22,11 @@ public class TodayEntry {
     private String time;
 
     @ColumnInfo(name = WaterDbUtils.TT.Names.COL_AMOUNT)
-    private int amount;
+    private int amountInMilliLitres;
 
     public TodayEntry() {
         this.time= TimeUtilities.getCurrentTime();
     }
-
-
 
     public long getId() {
         return id;
@@ -39,8 +37,8 @@ public class TodayEntry {
         return time;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getAmountInMilliLitres() {
+        return amountInMilliLitres;
     }
 
 
@@ -52,13 +50,13 @@ public class TodayEntry {
         this.time = time;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setAmountInMilliLitres(int amountInMilliLitres) {
+        this.amountInMilliLitres = amountInMilliLitres;
     }
 
 
     @Override @NonNull
     public String toString() {
-        return String.format(Locale.ROOT, "TodayEntry{id=%d, time='%s', amount=%d}", id, time, amount);
+        return String.format(Locale.ROOT, "TodayEntry{id=%d, time='%s', amount=%d}", id, time, amountInMilliLitres);
     }
 }

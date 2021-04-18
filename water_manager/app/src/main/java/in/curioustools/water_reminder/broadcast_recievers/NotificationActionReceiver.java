@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import in.curioustools.water_reminder.utils.NotifMaker;
-import in.curioustools.water_reminder.utils.UtilMethods;
+import in.curioustools.water_reminder.utils.AndroidBasedUtils;
 import in.curioustools.water_reminder.db.db_water.WaterRepo;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.KEYS;
@@ -63,7 +63,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         SharedPreferences prefMain = ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         WaterRepo repo = WaterRepo.getRepoInstance(ctx.getApplicationContext());
 
-        UtilMethods.makeDateChanges(prefMain, repo);
+        AndroidBasedUtils.makeDateChanges(prefMain, repo);
 
         int achieved = prefMain.getInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, Defaults.TODAY_INTAKE_ACHIEVED);
         prefMain.edit().putInt(KEYS.KEY_TODAY_INTAKE_ACHIEVED, achieved + 150).apply();

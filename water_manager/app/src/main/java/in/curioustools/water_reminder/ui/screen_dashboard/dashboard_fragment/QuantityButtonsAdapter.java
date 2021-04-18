@@ -41,7 +41,7 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
 
         //is last is a check based on which our code to add new data will get triggered.
         boolean isLast = (data == QuantityButtonModel.QUANTITY_ADD_NEW);
-        holder.bind(data.getQtyImage(), data.getQty(), clickListener, isLast);
+        holder.bindData(data.getQtyImage(), data.getQty(), clickListener, isLast);
     }
 
     @Override
@@ -77,9 +77,9 @@ public class QuantityButtonsAdapter extends RecyclerView.Adapter<QuantityButtons
 
 
     interface QuantityButtonClickListener {
-        void onItemClick(int qty);
+        void onQtyButtonClick(int qty);
 
-        void onAddNewItemClick();
+        void onAddNewQtyButtonClick();
     }
 
     /*

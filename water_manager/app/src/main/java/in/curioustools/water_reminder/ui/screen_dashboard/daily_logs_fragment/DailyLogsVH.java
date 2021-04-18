@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import in.curioustools.water_reminder.R;
 import in.curioustools.water_reminder.db.db_water.model.DailyLog;
-import in.curioustools.water_reminder.utils.UtilMethods;
+import in.curioustools.water_reminder.utils.JVMBasedUtils;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.O;
@@ -70,14 +70,14 @@ class DailyLogsVH extends RecyclerView.ViewHolder {
         } else {
             //extracting data
             String date = data.getDate();
-            int achieved = data.getAchieved(), target = data.getTarget();
+            int achieved = data.getAchievedInMilliLitres(), target = data.getTargetInMilliLitres();
 
             tvDate.setText(date);
 
             final String stat ;
             if(showAsImperial){
-                stat = UtilMethods.convertToFluidOunces(achieved) + "/" +
-                        UtilMethods.convertToFluidOunces(target) + " fl. oz.";
+                stat = JVMBasedUtils.convertToFluidOunces(achieved) + "/" +
+                        JVMBasedUtils.convertToFluidOunces(target) + " fl. oz.";
             }else {
                stat =  achieved + "/" + target + " ml";
             }

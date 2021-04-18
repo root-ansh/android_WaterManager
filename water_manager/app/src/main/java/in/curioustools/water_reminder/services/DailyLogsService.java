@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import in.curioustools.water_reminder.utils.UtilMethods;
+import in.curioustools.water_reminder.utils.AndroidBasedUtils;
 import in.curioustools.water_reminder.db.db_water.WaterRepo;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
@@ -38,7 +38,7 @@ public class DailyLogsService extends Worker {
         Log.e(TAG, "doWork: prefs.getBoolean(KEYS.KEY_SHOW_LOGS) = " + showLogs);
         if (showLogs) {
             Log.e(TAG, "doWork: calling UtilMethods.makeDateChanges(prefs,repo); coz showLogs is true");
-            UtilMethods.makeDateChanges(prefs, repo);
+            AndroidBasedUtils.makeDateChanges(prefs, repo);
         } else {
             Log.e(TAG, "doWork: doing nothing( coz showLogs is false)");
         }

@@ -1,18 +1,20 @@
 package in.curioustools.water_reminder.utils;
 
+import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import in.curioustools.water_reminder.db.db_water.WaterRepo;
 import in.curioustools.water_reminder.db.db_water.model.DailyLog;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.KEYS;
 
-public class UtilMethods {
+public class AndroidBasedUtils {
 
-    public static void makeDateChanges(
-            @NonNull SharedPreferences prefBasicInfo, @NonNull WaterRepo repo) {
+    public static void makeDateChanges(@Nullable SharedPreferences prefBasicInfo,@Nullable WaterRepo repo) {
         /* A function to check weather the current date(i.e the date at which this method is called)
          * is equal to 'savedDate' attribute inside prefUserDetails. if True, it won't do anything.
          * If false, it will:
@@ -21,6 +23,7 @@ public class UtilMethods {
          *     3. clear allitems in today entries table table
          *
          * */
+        if(prefBasicInfo == null || repo == null) return;
         boolean showLogs = prefBasicInfo.getBoolean(KEYS.KEY_SHOW_LOGS, Defaults.SHOW_LOGS);
         if (showLogs) {
             String dateFromPref = prefBasicInfo.getString(KEYS.KEY_DATE_TODAY, Defaults.DATE_TODAY);
@@ -31,8 +34,8 @@ public class UtilMethods {
 
                 DailyLog log = new DailyLog();
                 log.setDate(dateFromPref);
-                log.setTarget(targetQty);
-                log.setAchieved(achievedQty);
+                log.setTargetInMilliLitres(targetQty);
+                log.setAchievedInMilliLitres(achievedQty);
 
                 //1
                 if (!repo.checkIfLogExists(log)) {
@@ -56,14 +59,33 @@ public class UtilMethods {
 
 
     }
+    
+    public static void setTextAnimated(int newValue, final TextView tv) {
+        if(tv == null) return;
 
-    /// https://opentextbc.ca/basickitchenandfoodservicemanagement/chapter/imperial-and-u-s-systems-of-measurement/
-    public static int convertToFluidOunces(int millilitres){
-        return (int) (millilitres/29.57);
+        int oldValue ;
+        try {
+            oldValue = Integer.parseInt(tv.getText().toString());
+        }
+        catch (Exception e){
+            oldValue = 0;
+        }
+        if(oldValue>newValue){
+            tv.setText(String.valueOf(newValue));
+        }
+        else{
+            ValueAnimator animator = ValueAnimator.ofInt(oldValue, newValue);
+            animator.setDuration(1500);
+            animator.addUpdateListener(
+                    valueAnimator -> {
+                        String s = String.format("%s", valueAnimator.getAnimatedValue().toString());
+                        tv.setText(s);
+                    }
+            );
+            animator.start();
+        }
+
     }
 
-    public static int convertToMillis(int fluidOunces){
-        return (int) (fluidOunces * 29.57);
-    }
 
 }

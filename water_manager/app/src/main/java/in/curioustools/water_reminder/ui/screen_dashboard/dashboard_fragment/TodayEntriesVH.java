@@ -40,7 +40,7 @@ class TodayEntriesVH extends RecyclerView.ViewHolder {
     //todo : use isLast
     void bindData(final TodayEntry data, final boolean isLast, @Nullable final TodayEntriesAdapter.OnMyMenuItemClickListener listener) {
         String a = "Drank ";
-        String b = "" + data.getAmount();
+        String b = "" + data.getAmountInMilliLitres();
         String c = " ml of water";
         Spanned qtyTextFormatted = Html.fromHtml(a + "<font color=#304EFF><b>" + b + "</b></font>" + c);
 
@@ -62,7 +62,7 @@ class TodayEntriesVH extends RecyclerView.ViewHolder {
 //                itemView.findViewById(R.id.fl_ladder_design).setVisibility(View.GONE);
 //            }
 
-        ivQty.setImageResource(QuantityButtonModel.getResForQty(data.getAmount()));
+        ivQty.setImageResource(QuantityButtonModel.getResForQty(data.getAmountInMilliLitres()));
 
     }
 

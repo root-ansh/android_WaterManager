@@ -27,7 +27,7 @@ import in.curioustools.water_reminder.R;
 import in.curioustools.water_reminder.utils.Dialogs;
 import in.curioustools.water_reminder.db.pref.PrefUserDetails.Defaults;
 import in.curioustools.water_reminder.services.ServicesHandler;
-import in.curioustools.water_reminder.utils.UtilMethods;
+import in.curioustools.water_reminder.utils.JVMBasedUtils;
 
 import static android.content.Context.*;
 import static in.curioustools.water_reminder.db.pref.PrefUserDetails.*;
@@ -118,7 +118,7 @@ public class SettingsFragment extends Fragment {
         tvWeight.setText(String.format(Locale.ROOT, "%d kg", weight));
 
         String intakeString = showImperialMeasurements
-                ? String.format(Locale.ROOT,"%d Fl. Oz", UtilMethods.convertToFluidOunces(intake))
+                ? String.format(Locale.ROOT,"%d Fl. Oz", JVMBasedUtils.convertToFluidOunces(intake))
                 : String.format(Locale.ROOT, "%d ml", intake) ;
 
         tvIntake.setText(intakeString);
