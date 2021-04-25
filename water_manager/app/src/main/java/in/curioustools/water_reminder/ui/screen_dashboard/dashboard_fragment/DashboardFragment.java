@@ -79,7 +79,6 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
             CarouselLayoutManager lm = new CarouselLayoutManager(HORIZONTAL, true);
             lm.setPostLayoutListener(new CarouselZoomPostLayoutListener());
             rvButtons.setLayoutManager(lm);
-            rvButtons.setHasFixedSize(true);
             rvButtons.setAdapter(adpButtons);
             rvButtons.scrollToPosition(adpButtons.getItemCount() / 2);
         }
@@ -91,7 +90,6 @@ public class DashboardFragment extends Fragment implements SharedPreferences.OnS
             adpEntries.setListener(this);
 
             rvTodayEntries.setLayoutManager(new LinearLayoutManager(fragView.getContext()));
-            rvTodayEntries.setHasFixedSize(true);
             rvTodayEntries.setAdapter(adpEntries);
         }
 
